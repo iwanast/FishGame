@@ -4,8 +4,16 @@ import Fishgame from "./Fishgame"
 
 const config = {
   width: 800,
-  height: 500,
-  type:Phaser.AUTO
+  height: 600,
+  type: Phaser.AUTO,
+  scene: [ Fishgame],
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: false,
+      //gravity: { y: 5 },
+    }
+  }
 }
 
 const game = new Phaser.Game(config)
