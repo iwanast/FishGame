@@ -1,23 +1,19 @@
-import Phaser from "phaser"
+import Phaser from "phaser";
 
-import Fishgame from "./Fishgame"
+import config from "./config"
+import FishgameScene from "./Fishgame";
+import IntroScene from "./Intro";
+import ScoreScene from "./Score";
 
-const config = {
-  width: 800,
-  height: 600,
-  type: Phaser.AUTO,
-  scene: [ Fishgame],
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: false,
-      //gravity: { y: 5 },
-    }
+class Game extends Phaser.Game {
+  constructor() {
+    super(config);
+    this.scene.add("Game", FishgameScene);
+    this.scene.add("Intro", IntroScene);
+    this.scene.add("Score", ScoreScene);
+    // This decides what the first scene will be
+    this.scene.start("Intro");
   }
 }
 
-const game = new Phaser.Game(config)
-
-game.scene.add("fishgame", Fishgame)
-
-game.scene.start("fishgame")
+window.game = new Game();
