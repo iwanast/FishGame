@@ -1,6 +1,6 @@
 import Phaser from "phaser"
 
-import { getScoreAndUsername, userScore } from "./firebase"
+import { getScoreAndUsername, arrayScores } from "./firebase"
 
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
@@ -18,8 +18,8 @@ export default class ScoreScene extends Phaser.Scene {
     this.load.image("jellyfishButton", jellyfishSrc);
     this.load.image("introButton", plasticbottleSrc);
     getScoreAndUsername();
-    console.log(userScore)
-    // getScoreAndUsername()
+    arrayScores;
+    console.log(arrayScores[0].username)
   }
 
   create(){
@@ -31,7 +31,9 @@ export default class ScoreScene extends Phaser.Scene {
     scoreText = this.add.text(center.x, 30, `Your score is: 20
 Most of your friends die
 and you too. 
-Better luck next time!`, {
+Better luck next time!
+
+`, {
   font: '24px monospace',
   fill: '#ffff00'    // text-color
 }); 

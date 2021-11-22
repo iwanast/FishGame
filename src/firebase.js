@@ -34,14 +34,16 @@ async function getScoreAndUsername() {
   const highScoreCol = collection(db, 'highscore')
   const q =  query(highScoreCol, orderBy("score", "desc"), limit(2))
   const querySnapshot = await getDocs(q); 
-  
+  populateHighscoreArray(querySnapshot); 
+}
+
+function populateHighscoreArray(querySnapshot) {
   querySnapshot.forEach((item) => {
-    arrayScores.push(item)
+    arrayScores.push({
+      score: item.data().score, 
+      username : item.data().username,
+    });
   });
-  console.log(arrayScores[0])
-  //const highScoreList = highScoreSnapshot.docs.map(doc => doc.data(limit(2), orderBy("score", "desc")));
-  return arrayScores;
- 
 }
 
 export {getScoreAndUsername, userScore}
