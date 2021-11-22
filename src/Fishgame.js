@@ -38,7 +38,7 @@ export default class FishgameScene extends Phaser.Scene {
     plasticbag1.setScale(0.4);
 
     // Timer with a function onEvent
-    this.timedEvent = this.time.delayedCall(10000, this.onEvent, [], this);
+    this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
     
   }

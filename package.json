@@ -10,7 +10,9 @@
   "author": "Tintin Hamrin, Mohammad Moazzen, Iwana Städeli",
   "license": "ISC",
   "dependencies": {
+    "firebase": "^9.5.0",
     "parcel-bundler": "^1.12.5",
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "regenerator-runtime": "^0.13.9"
   }
 }

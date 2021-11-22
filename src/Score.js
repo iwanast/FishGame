@@ -1,5 +1,7 @@
 import Phaser from "phaser"
 
+import { getScoreAndUsername, userScore } from "./firebase"
+
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
 
@@ -15,6 +17,9 @@ export default class ScoreScene extends Phaser.Scene {
   preload(){
     this.load.image("jellyfishButton", jellyfishSrc);
     this.load.image("introButton", plasticbottleSrc);
+    getScoreAndUsername();
+    console.log(userScore)
+    // getScoreAndUsername()
   }
 
   create(){
@@ -58,7 +63,7 @@ Better luck next time!`, {
 
   update(){
     // Change the score to the real user-score
-
+    
     }
 
     // This centers the text in the image for the button 
