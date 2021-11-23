@@ -5,7 +5,18 @@ import plasticbottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 
-let plasticbag1, jellyfish, ocean, center, plasticbottle1, timerText, fish, fishCursors;
+let plasticbag1,
+  plasticbag2,
+  plasticbag3,
+  jellyfish,
+  ocean,
+  center,
+  plasticbottle1,
+  plasticbottle2,
+  plasticbottle3,
+  timerText,
+  fish,
+  fishCursors;
 
 let isNotRunning = false;
 
@@ -30,66 +41,93 @@ export default class FishgameScene extends Phaser.Scene {
 
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setScale(0.1);
+
     jellyfish = this.physics.add.sprite(
-      center.x - 100,
-      center.y - 100,
+      center.x - 40,
+      center.y - 70,
       "jellyfish"
     );
+    jellyfish.setScale(0.5);
 
     plasticbottle1 = this.physics.add.sprite(
       center.x + 50,
       center.y + 40,
       "plasticbottle"
     );
-    plasticbottle1.setScale(0.3);
+    plasticbottle1.setScale(0.1);
+
+    plasticbottle2 = this.physics.add.sprite(
+      center.x + 400,
+      center.y + 200,
+      "plasticbottle"
+    );
+    plasticbottle2.setScale(0.1);
+
+    plasticbottle3 = this.physics.add.sprite(
+      center.x + 179,
+      center.y + 430,
+      "plasticbottle"
+    );
+    plasticbottle3.setScale(0.1);
 
     plasticbag1 = this.physics.add.sprite(
       center.x + 100,
       center.y + 100,
       "plasticbag"
     );
-    plasticbag1.setScale(0.4);
+    plasticbag1.setScale(0.2);
 
-    fish = this.add.sprite(center.x - 500, center.y - 250, "fish");
+    plasticbag2 = this.physics.add.sprite(
+      center.x + 50,
+      center.y + 360,
+      "plasticbag"
+    );
+    plasticbag2.setScale(0.2);
+
+    plasticbag3 = this.physics.add.sprite(
+      center.x + 300,
+      center.y + 300,
+      "plasticbag"
+    );
+    plasticbag3.setScale(0.2);
+
+    fish = this.physics.add.sprite(center.x - 500, center.y - 250, "fish");
     fish.setScale(0.8);
-    // setting cursors for fish 
+    fish.setBodySize(100, 100, true);
+    // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
 
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(10000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
+
+    //so the fish cant escape the screen
+    fish.setCollideWorldBounds(true);
   }
 
   update() {
-    
-    // if (window.game.input.mousePointer.isDown) {
-    //   console.log('ok');
-    //   //  400 is the speed it will move towards the mouse
-    //   window.game.physics.arcade.moveToPointer(fish, 400);
-    // }
-    
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
-      console.log('up');
+      //console.log("up");
       fish.y -= 2;
-      //fish.setVelocity(0, -200);
-      //fish.anims.play('up', true);
     }
     if (fishCursors.down.isDown) {
-      console.log('down');
+      //console.log("down");
       fish.y += 2;
-      //fish.setVelocity(0, 200)
     }
     if (fishCursors.right.isDown) {
-      console.log('right');
+      //console.log("right");
       fish.x += 2;
-      //fish.setVelocity(200, 0)
     }
     if (fishCursors.left.isDown) {
-      console.log('left');
+      //console.log("left");
       fish.x -= 2;
-      //fish.setVelocity(-200, 0)
     }
+ 
+    // eliminates the bottle on contact
+    this.physics.add.collider(fish, plasticbottle1, function () {
+      plasticbottle1.destroy();
+    });
 
     // Timer direct running when all loaded and displayed here.
     timerText.setText(
@@ -102,8 +140,8 @@ export default class FishgameScene extends Phaser.Scene {
     }
   }
 
-  // onEvent() {
-  //   isNotRunning = true;
-  //   this.scene.start("Score");
-  // }
+  onEvent() {
+    isNotRunning = true;
+    this.scene.start("Score");
+  }
 }
