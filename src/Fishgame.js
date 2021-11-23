@@ -4,9 +4,14 @@ import bagSrc from "../assets/bag.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
 import oceanSrc from "../assets/ocean.png"
 
-let plasticbag1, jellyfish, ocean, center, plasticbottle1, timerText; 
+let plasticbag1, jellyfish, ocean, center, plasticbottle1, timerText, userScore; 
 
+ 
 let isNotRunning = false;
+
+// For the scores
+userScore = 3;
+sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
 
@@ -53,8 +58,11 @@ export default class FishgameScene extends Phaser.Scene {
     }
   }
  
+  // Function for when the timer is 0
   onEvent () {
   isNotRunning = true; 
+  // Saving the userScore to sessionStorage
+  sessionStorage.setItem("score", userScore);
     this.scene.start("Score");
 }
 

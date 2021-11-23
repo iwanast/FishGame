@@ -3,8 +3,11 @@ import Phaser from "phaser"
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
 
-let center, introText;  
+let center, introText, username;  
 
+// Set-up for the username
+username = "ThisIsTheUsernameTest"; // set to "" when the input-saving is working
+sessionStorage.setItem("user", ""); // Prepare the sessionStorage
 
 export default class IntroScene extends Phaser.Scene {
 
@@ -57,6 +60,15 @@ export default class IntroScene extends Phaser.Scene {
     });
   }
 
+  update(){
+    // Here perhaps saving the username to sessionStorage when user is giving a username
+    // saving the input to the variable username
+    //then saving it to sessionStorage: 
+    sessionStorage.setItem("user", username);
+
+  // Perhaps we could hide the play-button until the user has set a username? 
+
+  }
 // This centers the text in the image for the button 
   centerButtonText (gameText, gameButton) {
     Phaser.Display.Align.In.Center(
