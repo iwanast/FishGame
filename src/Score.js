@@ -1,14 +1,13 @@
 import Phaser from "phaser"
 
-import {getScoreAndUsername, storeScoreInFireStore} from "./firebase"
+import {getScoreAndUsername} from "./firebase"
 
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
 
-let center, scoreText; 
-arrayScores = [];
+let center, scoreText;
 
-class ScoreScene extends Phaser.Scene {
+export default class ScoreScene extends Phaser.Scene {
 
   constructor() {
     super("Score");
@@ -78,21 +77,22 @@ class ScoreScene extends Phaser.Scene {
   }
   
   setScoreText(querySnapshot){
+    let theBestScoresArray = []
 
-    // querySnapshot.forEach((item) => {
-      //     arrayScores.push({
-      //       score: item.data().score, 
-      //       username : item.data().username,
-      //     });
-      //   });
+    querySnapshot.forEach((item) => {
+          theBestScoresArray.push({
+            score: item.data().score, 
+            username : item.data().username,
+          });
+        });
 
     scoreText = this.add.text(center.x, 30, `Your score is: 20
   Most of your friends die
   and you too. 
   Better luck next time!
   
-  Best score from user ${arrayScores[0].username} with ${arrayScores[0].score}
-  Second comes user ${arrayScores[1].username} with ${arrayScores[1].score}
+  Best score from user ${theBestScoresArray[0].username} with ${theBestScoresArray[0].score}
+  Second comes user ${theBestScoresArray[1].username} with ${theBestScoresArray[1].score}
   `, {
     font: '24px monospace',
     fill: '#ffff00'    // text-color
@@ -104,5 +104,3 @@ class ScoreScene extends Phaser.Scene {
 
 
 }
-
-export {setScoreText, ScoreScene}

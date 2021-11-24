@@ -9,6 +9,7 @@ import {
   getDocs,
   get,
   setDoc,
+  addDoc,
   query,
   limit,
   orderBy,
@@ -29,12 +30,13 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 let arrayScores = [];
 
-function storeScoreInFireStore(user, userScore) {
+async function storeScoreInFireStore(user, userScore) {
   // storing name and score to firestore
-  db.collection("highscore").add({
+  const docRef = await addDoc(collection(db, "highscore"), {
     score: userScore,
     username: user,
   });
+  console.log(docRef.id);
 }
 
 async function getScoreAndUsername() {
@@ -62,4 +64,4 @@ async function getScoreAndUsername() {
 //   });
 // }
 
-export {getScoreAndUsername, storeScoreInFireStore, arrayScores}
+export {getScoreAndUsername, storeScoreInFireStore}
