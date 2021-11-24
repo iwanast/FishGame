@@ -1,14 +1,10 @@
 import 'regenerator-runtime/runtime';
-import {setScoreText} from "./Score"
 
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
   collection,
-  doc,
   getDocs,
-  get,
-  setDoc,
   addDoc,
   query,
   limit,
@@ -39,29 +35,30 @@ async function storeScoreInFireStore(user, userScore) {
   console.log(docRef.id);
 }
 
-async function getScoreAndUsername() {
+async function getScoreAndUsername(callback) {
   // Save first the new user/userscore in Firestore
   let score = JSON.parse(sessionStorage.getItem("score"));
-  let username = sessionStorage.getItem("user")  
-  console.log(username)   
-  storeScoreInFireStore(username, score); 
+  let username = sessionStorage.getItem("user"); 
+  //When game is functioning, we do not cancel out this anymore, but for now we do not want to save all the scores each time we restart
+  //storeScoreInFireStore(username, score); 
 
   // take now from Firestore the best 2
   const highScoreCol = collection(db, 'highscore')
   const q =  query(highScoreCol, orderBy("score", "desc"), limit(2))
   const querySnapshot = await getDocs(q); 
-  //populateHighscoreArray(querySnapshot); 
-  setScoreText(querySnapshot)
-  
+  populateHighscoreArray(querySnapshot); 
+  callback(arrayScores)
 }
 
-// function populateHighscoreArray(querySnapshot) {
-//   querySnapshot.forEach((item) => {
-//     arrayScores.push({
-//       score: item.data().score, 
-//       username : item.data().username,
-//     });
-//   });
-// }
+function populateHighscoreArray(querySnapshot) {
+  arrayScores = [];
+  querySnapshot.forEach((item) => {
+    arrayScores.push({
+      score: item.data().score, 
+      username : item.data().username,
+    });
+  });
+  sessionStorage.setItem("bestScores", arrayScores);
+}
 
-export {getScoreAndUsername, storeScoreInFireStore}
+export {getScoreAndUsername}
