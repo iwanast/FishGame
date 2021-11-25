@@ -6,6 +6,8 @@ import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
+import soundMunchingSrc from "../assets/fastMunching.wav";
+import helmSrc from "../assets/plastichelm.png";
 
 let plasticbag1,
   plasticbag2,
@@ -21,8 +23,10 @@ let plasticbag1,
   turtle,
   dontEatMeText,
   eatingSound,
+  munchingSound,
   userScore,
-  fishCursors;
+  fishCursors,
+  plastichelm;
 
  
 let isNotRunning = false;
@@ -44,6 +48,8 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
+    this.load.audio("soundMunching", soundMunchingSrc);
+    this.load.image("plastichelm", helmSrc);
   }
 
   create() {
@@ -52,22 +58,27 @@ export default class FishgameScene extends Phaser.Scene {
       y: this.physics.world.bounds.height / 2,
     };
 
+    // Backgroundimage
     ocean = this.physics.add.image(center.x, center.y, "ocean");
-    ocean.setScale(0.1);
-
+    ocean.setDisplaySize(center.x * 2, center.y * 2);
+console.log(center.x + "center.y: " + center.y)
+    
+    // Jellyfish
     jellyfish = this.physics.add.sprite(
-      center.x - 40,
-      center.y - 70,
+      center.x - (center.x /8),
+      center.y - (center.y /2),
       "jellyfish"
     );
-    jellyfish.setScale(0.5);
+    jellyfish.setDisplaySize(center.x / 4, center.y / 4);
+    //jellyfish.setBodySize(center.x, (center.y/4)/2, true);
+    console.log(jellyfish)
 
     plasticbottle1 = this.physics.add.sprite(
-      center.x + -150,
-      center.y + -200,
+      center.x -(center.x /4),
+      center.y -(center.y /6),
       "plasticbottle"
     );
-    plasticbottle1.setScale(0.1);
+    plasticbottle1.setDisplaySize(center.x/6, center.y / 6);
 
     plasticbottle2 = this.physics.add.sprite(
       center.x + 400,
@@ -114,7 +125,7 @@ export default class FishgameScene extends Phaser.Scene {
     fishCursors = this.input.keyboard.createCursorKeys();
 
     eatingSound = this.sound.add("sound", { loop: false });
-
+    munchingSound = this.sound.add("soundMunching", { loop: false });
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
@@ -152,7 +163,8 @@ export default class FishgameScene extends Phaser.Scene {
 
     // eliminates the bottle on contact
     this.physics.add.collider(fish, plasticbottle1, function () {
-      eatingSound.play()
+      //eatingSound.play()
+      munchingSound.play()
       plasticbottle1.destroy();
     });
 
@@ -181,7 +193,6 @@ export default class FishgameScene extends Phaser.Scene {
     isNotRunning = true; 
     // Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-    console.log("onEvent Fishgame")
-      this.scene.start("Score");
+      //this.scene.start("Score");
   }
 }
