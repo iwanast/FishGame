@@ -4,3 +4,8 @@
 # Dependency directories
 node_modules/
 jspm_packages/
+
+*.log
+.vscode
+.cache/
+dist/

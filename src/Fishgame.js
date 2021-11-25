@@ -21,9 +21,15 @@ let plasticbag1,
   turtle,
   dontEatMeText,
   eatingSound,
+  userScore,
   fishCursors;
 
+ 
 let isNotRunning = false;
+
+// For the scores
+userScore = 3;
+sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
   constructor() {
@@ -110,7 +116,7 @@ export default class FishgameScene extends Phaser.Scene {
     eatingSound = this.sound.add("sound", { loop: false });
 
     // Timer with a function onEvent
-    this.timedEvent = this.time.delayedCall(10000, this.onEvent, [], this);
+    this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
 
     //so the fish cant escape the screen
@@ -171,4 +177,10 @@ export default class FishgameScene extends Phaser.Scene {
   //   isNotRunning = true;
   //   this.scene.start("Score");
   // }
+  onEvent() {
+    isNotRunning = true; 
+    // Saving the userScore to sessionStorage
+    sessionStorage.setItem("score", userScore);
+      this.scene.start("Score");
+  }
 }
