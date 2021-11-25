@@ -1,6 +1,6 @@
 import Phaser from "phaser"
 
-import {getScoreAndUsername} from "./firebase"
+import {getScoreAndUsername, arrayScores} from "./firebase"
 
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
@@ -16,7 +16,10 @@ export default class ScoreScene extends Phaser.Scene {
   preload(){
     this.load.image("jellyfishButton", jellyfishSrc);
     this.load.image("introButton", plasticbottleSrc);
-    getScoreAndUsername();
+    console.log("preload Score")
+    getScoreAndUsername((arrayScores) =>{
+      this.setScoreText(arrayScores);
+    });
   }
 
   create(){
@@ -25,20 +28,6 @@ export default class ScoreScene extends Phaser.Scene {
       y: this.physics.world.bounds.height / 2
     };
 
-  // setScoreText();
-//     scoreText = this.add.text(center.x, 30, `Your score is: 20
-// Most of your friends die
-// and you too. 
-// Better luck next time!
-
-// `, {
-//   font: '24px monospace',
-//   fill: '#ffff00'    // text-color
-// });
-
-// Best score from user ${arrayScores[0].username} with ${arrayScores[0].score}
-// Second comes user ${arrayScores[1].username} with ${arrayScores[1].score}
-  
    // Image for the introButton 
    this.introButton = this.add.sprite(center.x, center.y + 200, "introButton").setInteractive();
    this.introButton.setScale(0.2);
@@ -52,7 +41,7 @@ export default class ScoreScene extends Phaser.Scene {
      this.scene.start('Intro');
    }.bind(this));
 
-   // This adds an hover-effect (in this case a second image)
+   // This adds a hover-effect (in this case a second image)
    this.input.on('pointerover', function (event, gameObjects) {
      gameObjects[0].setTexture('jellyfishButton');
    });
@@ -65,6 +54,7 @@ export default class ScoreScene extends Phaser.Scene {
   update(){
 
     // Change the score to the real user-score
+    //this.uppdateScore();
     
     }
 
@@ -75,24 +65,16 @@ export default class ScoreScene extends Phaser.Scene {
       gameButton
     );
   }
-  
-  setScoreText(querySnapshot){
-    let theBestScoresArray = []
 
-    querySnapshot.forEach((item) => {
-          theBestScoresArray.push({
-            score: item.data().score, 
-            username : item.data().username,
-          });
-        });
-
-    scoreText = this.add.text(center.x, 30, `Your score is: 20
+  // Sets the text in the Score-page after the firebase-highscores are uppdated and called
+  setScoreText(arrayScores){
+    scoreText = this.add.text(center.x, 30, ` Your score is: 20
   Most of your friends die
   and you too. 
   Better luck next time!
   
-  Best score from user ${theBestScoresArray[0].username} with ${theBestScoresArray[0].score}
-  Second comes user ${theBestScoresArray[1].username} with ${theBestScoresArray[1].score}
+  Best score from user ${arrayScores[0].username} with ${arrayScores[0].score}
+  Second comes user ${arrayScores[1].username} with ${arrayScores[1].score}
   `, {
     font: '24px monospace',
     fill: '#ffff00'    // text-color
@@ -101,6 +83,4 @@ export default class ScoreScene extends Phaser.Scene {
   scoreText.setOrigin(0.5, 0); // this sets the text 50% to the left of its own length (so its really centered)
 
   }
-
-
 }

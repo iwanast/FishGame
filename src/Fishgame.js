@@ -150,6 +150,7 @@ export default class FishgameScene extends Phaser.Scene {
     isNotRunning = true; 
     // Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
+    console.log("onEvent Fishgame")
       this.scene.start("Score");
   }
 }
