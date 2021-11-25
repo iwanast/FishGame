@@ -5,6 +5,7 @@ import plasticbottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
+import soundSrc from "../assets/soundfx.wav";
 
 let plasticbag1,
   plasticbag2,
@@ -19,6 +20,7 @@ let plasticbag1,
   fish,
   turtle,
   dontEatMeText,
+  eatingSound,
   fishCursors;
 
 let isNotRunning = false;
@@ -35,6 +37,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("plasticbottle", plasticbottleSrc);
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
+    this.load.audio("sound", soundSrc);
   }
 
   create() {
@@ -104,6 +107,8 @@ export default class FishgameScene extends Phaser.Scene {
     // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
 
+    eatingSound = this.sound.add("sound", { loop: false });
+
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(10000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
@@ -141,6 +146,7 @@ export default class FishgameScene extends Phaser.Scene {
 
     // eliminates the bottle on contact
     this.physics.add.collider(fish, plasticbottle1, function () {
+      eatingSound.play()
       plasticbottle1.destroy();
     });
 
