@@ -8,6 +8,8 @@ import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
 import soundMunchingSrc from "../assets/fastMunching.wav";
 import helmSrc from "../assets/plastichelm.png";
+import strawSrc from "../assets/plasticstraw.png";
+import spoonSrc from "../assets/spoon.png";
 
 let plasticbag1,
   plasticbag2,
@@ -26,7 +28,9 @@ let plasticbag1,
   munchingSound,
   userScore,
   fishCursors,
-  plastichelm;
+  plastichelm1,
+  spoon1,
+  plasticstraw1;
 
  
 let isNotRunning = false;
@@ -50,6 +54,8 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.audio("sound", soundSrc);
     this.load.audio("soundMunching", soundMunchingSrc);
     this.load.image("plastichelm", helmSrc);
+    this.load.image("plasticstraw", strawSrc);
+    this.load.image("spoon", spoonSrc);
   }
 
   create() {
@@ -65,20 +71,37 @@ console.log(center.x + "center.y: " + center.y)
     
     // Jellyfish
     jellyfish = this.physics.add.sprite(
-      center.x - (center.x /8),
-      center.y - (center.y /2),
+      center.x + (center.x /2),
+      center.y - (center.y /1.5),
       "jellyfish"
     );
     jellyfish.setDisplaySize(center.x / 4, center.y / 4);
     //jellyfish.setBodySize(center.x, (center.y/4)/2, true);
-    console.log(jellyfish)
+    
+    //Plasticstraw1
+    plasticstraw1 = this.physics.add.sprite(
+      center.x + (center.x /2),
+      center.y - (center.y /1.5),
+      "plasticstraw"
+    );
+    //plasticstraw1.setDisplaySize(center.x / 4, center.y / 4);
 
+    //Spoon1
+    spoon1 = this.physics.add.sprite(
+      center.x - (center.x /2),
+      center.y + (center.y /1.5),
+      "spoon"
+    );
+
+    // Plasticbottle 1
     plasticbottle1 = this.physics.add.sprite(
       center.x -(center.x /4),
       center.y -(center.y /6),
       "plasticbottle"
     );
     plasticbottle1.setDisplaySize(center.x/6, center.y / 6);
+      //plasticbottle1.setOrigin(0, 0.5); // from which point to rotate then (x, y)
+      plasticbottle1.angle += 90; 
 
     plasticbottle2 = this.physics.add.sprite(
       center.x + 400,
@@ -117,6 +140,8 @@ console.log(center.x + "center.y: " + center.y)
 
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
+    turtle.setImmovable(true);
+    turtle.setBodySize(40, 40, true)
 
     fish = this.physics.add.sprite(center.x + 300, center.y - 250, "fish");
     fish.setScale(0.8);
@@ -146,23 +171,23 @@ console.log(center.x + "center.y: " + center.y)
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
       fish.y -= 2;
-      fish.setVelocity(0, -500);
+      fish.setVelocity(0, -600);
       
     }
     if (fishCursors.down.isDown) {
       //console.log("down");
       fish.y += 2;
-      fish.setVelocity(0, 500);
+      fish.setVelocity(0, 600);
     }
     if (fishCursors.right.isDown) {
       //console.log("right");
       fish.x += 2;
-      fish.setVelocity(500, 0);
+      fish.setVelocity(600, 0);
     }
     if (fishCursors.left.isDown) {
       //console.log("left");
       fish.x -= 2;
-      fish.setVelocity(-500, 0);
+      fish.setVelocity(-600, 0);
     }
     if(!fishCursors.left.isDown && !fishCursors.up.isDown && !fishCursors.down.isDown && !fishCursors.right.isDown)
     {
