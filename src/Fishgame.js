@@ -145,20 +145,28 @@ console.log(center.x + "center.y: " + center.y)
   update() {
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
-      //console.log("up");
       fish.y -= 2;
+      fish.setVelocity(0, -500);
+      
     }
     if (fishCursors.down.isDown) {
       //console.log("down");
       fish.y += 2;
+      fish.setVelocity(0, 500);
     }
     if (fishCursors.right.isDown) {
       //console.log("right");
       fish.x += 2;
+      fish.setVelocity(500, 0);
     }
     if (fishCursors.left.isDown) {
       //console.log("left");
       fish.x -= 2;
+      fish.setVelocity(-500, 0);
+    }
+    if(!fishCursors.left.isDown && !fishCursors.up.isDown && !fishCursors.down.isDown && !fishCursors.right.isDown)
+    {
+      fish.setVelocity(0, 0)
     }
 
     // eliminates the bottle on contact
