@@ -1,25 +1,25 @@
 import Phaser from "phaser";
 import jellyfishSrc from "../assets/jellyfish.png";
 import bagSrc from "../assets/bag.png";
-import plasticbottleSrc from "../assets/plasticbottle.png";
+import bottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
 import soundMunchingSrc from "../assets/fastMunching.wav";
-import helmSrc from "../assets/plastichelm.png";
-import strawSrc from "../assets/plasticstraw.png";
+import helmSrc from "../assets/helm.png";
+import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
 
-let plasticbag1,
-  plasticbag2,
-  plasticbag3,
+let bag1,
+  bag2,
+  bag3,
   jellyfish,
   ocean,
   center,
-  plasticbottle1,
-  plasticbottle2,
-  plasticbottle3,
+  bottle1,
+  bottle2,
+  bottle3,
   timerText,
   fish,
   turtle,
@@ -28,9 +28,10 @@ let plasticbag1,
   munchingSound,
   userScore,
   fishCursors,
-  plastichelm1,
+  helm1,
   spoon1,
-  plasticstraw1;
+  spoon2,
+  straw1;
 
  
 let isNotRunning = false;
@@ -45,16 +46,16 @@ export default class FishgameScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("plasticbag", bagSrc);
+    this.load.image("bag", bagSrc);
     this.load.image("jellyfish", jellyfishSrc);
     this.load.image("ocean", oceanSrc);
-    this.load.image("plasticbottle", plasticbottleSrc);
+    this.load.image("bottle", bottleSrc);
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
     this.load.audio("soundMunching", soundMunchingSrc);
-    this.load.image("plastichelm", helmSrc);
-    this.load.image("plasticstraw", strawSrc);
+    this.load.image("helm", helmSrc);
+    this.load.image("straw", strawSrc);
     this.load.image("spoon", spoonSrc);
   }
 
@@ -67,7 +68,6 @@ export default class FishgameScene extends Phaser.Scene {
     // Backgroundimage
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setDisplaySize(center.x * 2, center.y * 2);
-console.log(center.x + "center.y: " + center.y)
     
     // Jellyfish
     jellyfish = this.physics.add.sprite(
@@ -76,15 +76,16 @@ console.log(center.x + "center.y: " + center.y)
       "jellyfish"
     );
     jellyfish.setDisplaySize(center.x / 4, center.y / 4);
-    //jellyfish.setBodySize(center.x, (center.y/4)/2, true);
+    jellyfish.setBodySize(40, 40, true);
     
-    //Plasticstraw1
-    plasticstraw1 = this.physics.add.sprite(
+    //straw1
+    straw1 = this.physics.add.sprite(
       center.x + (center.x /2),
-      center.y - (center.y /1.5),
-      "plasticstraw"
+      center.y,
+      "straw"
     );
-    //plasticstraw1.setDisplaySize(center.x / 4, center.y / 4);
+    straw1.scaleX = 0.2; 
+    straw1.scaleY = straw1.scaleX; // this is to make the scale proportionally
 
     //Spoon1
     spoon1 = this.physics.add.sprite(
@@ -92,51 +93,67 @@ console.log(center.x + "center.y: " + center.y)
       center.y + (center.y /1.5),
       "spoon"
     );
+    spoon1.angle += 90; 
+    spoon1.setBodySize(150, 30);
 
-    // Plasticbottle 1
-    plasticbottle1 = this.physics.add.sprite(
+    //Spoon2
+    spoon2 = this.physics.add.sprite(
+      center.x - (center.x /1.7),
+      center.y - (center.y /1.5),
+      "spoon"
+    );
+    spoon2.angle = -90; 
+    spoon2.setBodySize(150, 30);
+    spoon2.scaleX = 0.4; 
+    spoon2.scaleY = spoon2.scaleX; // this is to make the scale proportionally
+
+
+    // bottle 1
+    bottle1 = this.physics.add.sprite(
       center.x -(center.x /4),
       center.y -(center.y /6),
-      "plasticbottle"
+      "bottle"
     );
-    plasticbottle1.setDisplaySize(center.x/6, center.y / 6);
-      //plasticbottle1.setOrigin(0, 0.5); // from which point to rotate then (x, y)
-      plasticbottle1.angle += 90; 
+    bottle1.setDisplaySize(center.x/6, center.y / 6);
+    //bottle1.setOrigin(0, 0.5); // from which point to rotate then (x, y)
+    bottle1.angle += 90; 
 
-    plasticbottle2 = this.physics.add.sprite(
+    bottle2 = this.physics.add.sprite(
       center.x + 400,
       center.y + 200,
-      "plasticbottle"
+      "bottle"
     );
-    plasticbottle2.setScale(0.1);
+    bottle2.setScale(0.5);
+    bottle2.angle += 130;
 
-    plasticbottle3 = this.physics.add.sprite(
+    bottle3 = this.physics.add.sprite(
       center.x + 179,
       center.y + 30,
-      "plasticbottle"
+      "bottle"
     );
-    plasticbottle3.setScale(0.1);
+    bottle3.setScale(0.3);
 
-    plasticbag1 = this.physics.add.sprite(
-      center.x + 100,
-      center.y + 100,
-      "plasticbag"
+    bag1 = this.physics.add.sprite(
+      center.x + center.x / 1.7,
+      center.y * 2 - center.y / 7,
+      "bag"
     );
-    plasticbag1.setScale(0.2);
+    bag1.setScale(0.8);
+    bag1.angle += 90;
 
-    plasticbag2 = this.physics.add.sprite(
+    bag2 = this.physics.add.sprite(
       center.x + 50,
       center.y + 360,
-      "plasticbag"
+      "bag"
     );
-    plasticbag2.setScale(0.2);
-
-    plasticbag3 = this.physics.add.sprite(
+    bag2.setScale(0.5);
+    bag2.angle += 180;
+    bag3 = this.physics.add.sprite(
       center.x + 300,
       center.y + 300,
-      "plasticbag"
+      "bag"
     );
-    plasticbag3.setScale(0.2);
+    bag3.setScale(0.7);
 
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
@@ -195,14 +212,17 @@ console.log(center.x + "center.y: " + center.y)
     }
 
     // eliminates the bottle on contact
-    this.physics.add.collider(fish, plasticbottle1, function () {
+    this.physics.add.collider(fish, bottle1, function () {
       //eatingSound.play()
       munchingSound.play()
-      plasticbottle1.destroy();
+      bottle1.destroy();
     });
 
     // if the fish collides with a friend
     this.physics.add.collider(fish, turtle, function () {
+      dontEatMeText.visible = true;
+    });
+    this.physics.add.collider(fish, jellyfish, function () {
       dontEatMeText.visible = true;
     });
     
