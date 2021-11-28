@@ -6,7 +6,7 @@ import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
-//import soundOuchSrc from "../assets/ouch.wav";
+import soundOuchSrc from "../assets/ouch.wav";
 
 let plasticbag1,
   plasticbag2,
@@ -22,7 +22,7 @@ let plasticbag1,
   turtle,
   dontEatMeText,
   eatingSound,
-  //ouchSound,
+  ouchSound,
   //userScore,
   scoreDisplay,
   fishCursors;
@@ -46,7 +46,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
-    //this.load.audio("soundOuch", soundOuchSrc);
+    this.load.audio("soundOuch", soundOuchSrc);
   }
 
   create() {
@@ -117,8 +117,6 @@ export default class FishgameScene extends Phaser.Scene {
       plasticbag3,
     ];
 
-    console.log(plastics)
-
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
 
@@ -129,7 +127,7 @@ export default class FishgameScene extends Phaser.Scene {
     fishCursors = this.input.keyboard.createCursorKeys();
 
     eatingSound = this.sound.add("sound", { loop: false });
-    //ouchSound = this.sound.add("ouchSound", { loop: false });
+    ouchSound = this.sound.add("soundOuch", { loop: false });
 
     // // Timer with a function onEvent
     // this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
@@ -150,26 +148,18 @@ export default class FishgameScene extends Phaser.Scene {
     );
     dontEatMeText.visible = false;
 
+    // eliminates plastics on contact + play eating sound
     plastics.forEach(plastic => {
-      //console.log("plast");
       this.physics.add.collider(fish, plastic, function () {
-        console.log("inside");
         eatingSound.play();
         plastic.destroy();
         userScore++;
       });
     });
 
-    // // eliminates the bottle on contact + play eating sound
-    // this.physics.add.collider(fish, plasticbottle1, function () {
-    //   eatingSound.play();
-    //   plasticbottle1.destroy();
-    //   userScore++;
-    // });
-
     // if the fish collides with a friend
     this.physics.add.collider(fish, turtle, function () {
-      //ouchSound.play();
+      ouchSound.play();
       dontEatMeText.visible = true;
       setTimeout(() => {
         dontEatMeText.visible = false;
