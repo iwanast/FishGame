@@ -115,17 +115,16 @@ export default class FishgameScene extends Phaser.Scene {
 
     eatingSound = this.sound.add("sound", { loop: false });
 
-    // Timer with a function onEvent
-    this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
-    timerText = this.add.text(center.x, 10); // the text for the timer
+    // // Timer with a function onEvent
+    // this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
+    // timerText = this.add.text(center.x, 10); // the text for the timer
 
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
     //text to appear when eating wrong things
-    dontEatMeText = this.add.text(center.x + 200, center.y - 200, 'Dont eat me!', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: 50 });
+    dontEatMeText = this.add.text(center.x + 100, center.y - 200, 'Dont eat me!', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: 50 });
     dontEatMeText.visible = false;
-  
   }
 
     
@@ -134,23 +133,19 @@ export default class FishgameScene extends Phaser.Scene {
   update() {
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
-      //console.log("up");
       fish.y -= 2;
     }
     if (fishCursors.down.isDown) {
-      //console.log("down");
       fish.y += 2;
     }
     if (fishCursors.right.isDown) {
-      //console.log("right");
       fish.x += 2;
     }
     if (fishCursors.left.isDown) {
-      //console.log("left");
       fish.x -= 2;
     }
 
-    // eliminates the bottle on contact
+    // eliminates the bottle on contact + play eating sound
     this.physics.add.collider(fish, plasticbottle1, function () {
       eatingSound.play()
       plasticbottle1.destroy();
@@ -159,14 +154,15 @@ export default class FishgameScene extends Phaser.Scene {
     // if the fish collides with a friend
     this.physics.add.collider(fish, turtle, function () {
       dontEatMeText.visible = true;
+      setTimeout(() => { dontEatMeText.visible = false; }, 2000); //take away msg after 2 sec
     });
     
 
-    // Timer direct running when all loaded and displayed here.
-    timerText.setText(
-      "Time left: " +
-        this.timedEvent.getRemainingSeconds().toString().substr(0, 4)
-    );
+    // // Timer direct running when all loaded and displayed here.
+    // timerText.setText(
+    //   "Time left: " +
+    //     this.timedEvent.getRemainingSeconds().toString().substr(0, 4)
+    // );
 
     if (!isNotRunning) {
       // Here the game in with the movements.
@@ -177,11 +173,11 @@ export default class FishgameScene extends Phaser.Scene {
   //   isNotRunning = true;
   //   this.scene.start("Score");
   // }
-  onEvent() {
-    isNotRunning = true; 
-    // Saving the userScore to sessionStorage
-    sessionStorage.setItem("score", userScore);
-    console.log("onEvent Fishgame")
-      this.scene.start("Score");
-  }
+  // onEvent() {
+  //   isNotRunning = true; 
+  //   // Saving the userScore to sessionStorage
+  //   sessionStorage.setItem("score", userScore);
+  //   console.log("onEvent Fishgame")
+  //     this.scene.start("Score");
+  // }
 }
