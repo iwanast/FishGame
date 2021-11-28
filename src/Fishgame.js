@@ -6,6 +6,7 @@ import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
+//import soundOuchSrc from "../assets/ouch.wav";
 
 let plasticbag1,
   plasticbag2,
@@ -21,14 +22,15 @@ let plasticbag1,
   turtle,
   dontEatMeText,
   eatingSound,
-  userScore,
+  //ouchSound,
+  //userScore,
+  scoreDisplay,
   fishCursors;
 
- 
 let isNotRunning = false;
 
 // For the scores
-userScore = 3;
+let userScore = 0;
 sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
@@ -44,6 +46,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
+    //this.load.audio("soundOuch", soundOuchSrc);
   }
 
   create() {
@@ -104,6 +107,18 @@ export default class FishgameScene extends Phaser.Scene {
     );
     plasticbag3.setScale(0.2);
 
+    // Creating an array of all plastics that we can use to erase them ontouch
+    const plastics = [
+      plasticbottle1,
+      plasticbottle2,
+      plasticbottle3,
+      plasticbag1,
+      plasticbag2,
+      plasticbag3,
+    ];
+
+    console.log(plastics)
+
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
 
@@ -114,6 +129,7 @@ export default class FishgameScene extends Phaser.Scene {
     fishCursors = this.input.keyboard.createCursorKeys();
 
     eatingSound = this.sound.add("sound", { loop: false });
+    //ouchSound = this.sound.add("ouchSound", { loop: false });
 
     // // Timer with a function onEvent
     // this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
@@ -123,14 +139,51 @@ export default class FishgameScene extends Phaser.Scene {
     fish.setCollideWorldBounds(true);
 
     //text to appear when eating wrong things
-    dontEatMeText = this.add.text(center.x + 100, center.y - 200, 'Dont eat me!', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: 50 });
+    dontEatMeText = this.add.text(
+      center.x + 100,
+      center.y - 200,
+      "Dont eat me!",
+      {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: 50,
+      }
+    );
     dontEatMeText.visible = false;
+
+    plastics.forEach(plastic => {
+      //console.log("plast");
+      this.physics.add.collider(fish, plastic, function () {
+        console.log("inside");
+        eatingSound.play();
+        plastic.destroy();
+        userScore++;
+      });
+    });
+
+    // // eliminates the bottle on contact + play eating sound
+    // this.physics.add.collider(fish, plasticbottle1, function () {
+    //   eatingSound.play();
+    //   plasticbottle1.destroy();
+    //   userScore++;
+    // });
+
+    // if the fish collides with a friend
+    this.physics.add.collider(fish, turtle, function () {
+      //ouchSound.play();
+      dontEatMeText.visible = true;
+      setTimeout(() => {
+        dontEatMeText.visible = false;
+      }, 2000); //take away msg after 2 sec
+    });
+
+    // Creating display for score
+    scoreDisplay = this.add.text(100, 100);
   }
 
-    
-    
-
   update() {
+    // Updates the score on screen
+    scoreDisplay.setText(`Score: ${userScore}`);
+
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
       fish.y -= 2;
@@ -144,19 +197,6 @@ export default class FishgameScene extends Phaser.Scene {
     if (fishCursors.left.isDown) {
       fish.x -= 2;
     }
-
-    // eliminates the bottle on contact + play eating sound
-    this.physics.add.collider(fish, plasticbottle1, function () {
-      eatingSound.play()
-      plasticbottle1.destroy();
-    });
-
-    // if the fish collides with a friend
-    this.physics.add.collider(fish, turtle, function () {
-      dontEatMeText.visible = true;
-      setTimeout(() => { dontEatMeText.visible = false; }, 2000); //take away msg after 2 sec
-    });
-    
 
     // // Timer direct running when all loaded and displayed here.
     // timerText.setText(
@@ -174,7 +214,7 @@ export default class FishgameScene extends Phaser.Scene {
   //   this.scene.start("Score");
   // }
   // onEvent() {
-  //   isNotRunning = true; 
+  //   isNotRunning = true;
   //   // Saving the userScore to sessionStorage
   //   sessionStorage.setItem("score", userScore);
   //   console.log("onEvent Fishgame")
