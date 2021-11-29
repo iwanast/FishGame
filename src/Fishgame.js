@@ -10,6 +10,8 @@ import soundMunchingSrc from "../assets/fastMunching.wav";
 import helmSrc from "../assets/helm.png";
 import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
+import jellowcoralSrc from "../assets/jellowcoral.png";
+import waterplantSrc from "../assets/waterplant.png";
 
 let bag1,
   bag2,
@@ -29,9 +31,15 @@ let bag1,
   userScore,
   fishCursors,
   helm1,
+  helm2,
+  helm3,
   spoon1,
   spoon2,
-  straw1;
+  straw1,
+  straw2,
+  straw3,
+  jellowcoral1,
+  waterplant;
 
  
 let isNotRunning = false;
@@ -57,6 +65,8 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("helm", helmSrc);
     this.load.image("straw", strawSrc);
     this.load.image("spoon", spoonSrc);
+    this.load.image("jellowCoral", jellowcoralSrc);
+    this.load.image("waterplant", waterplantSrc);
   }
 
   create() {
@@ -76,16 +86,37 @@ export default class FishgameScene extends Phaser.Scene {
       "jellyfish"
     );
     jellyfish.setDisplaySize(center.x / 4, center.y / 4);
-    jellyfish.setBodySize(40, 40, true);
-    
+    jellyfish.setBodySize(20, 20, true); // does not change the displaySize only the size to interact with
+    jellyfish.setImmovable(true);
+
     //straw1
     straw1 = this.physics.add.sprite(
-      center.x + (center.x /2),
-      center.y,
+      center.x - (center.x /3),
+      center.y - center.y / 5,
       "straw"
     );
     straw1.scaleX = 0.2; 
     straw1.scaleY = straw1.scaleX; // this is to make the scale proportionally
+    straw1.angle += 23;
+
+    //straw2
+    straw2 = this.physics.add.sprite(
+      center.x - (center.x /1.3),
+      center.y + (center.y / 2.8),
+      "straw"
+    );
+    straw2.scaleX = 0.2; 
+    straw2.scaleY = straw2.scaleX; // this is to make the scale proportionally
+
+    //straw3
+    straw3 = this.physics.add.sprite(
+      center.x - (center.x /6),
+      center.y - center.y / 5,
+      "straw"
+    );
+    straw3.scaleX = 0.2; 
+    straw3.scaleY = straw1.scaleX; // this is to make the scale proportionally
+    straw3.angle += 40;
 
     //Spoon1
     spoon1 = this.physics.add.sprite(
@@ -93,7 +124,7 @@ export default class FishgameScene extends Phaser.Scene {
       center.y + (center.y /1.5),
       "spoon"
     );
-    spoon1.angle += 90; 
+    spoon1.angle += 60; 
     spoon1.setBodySize(150, 30);
 
     //Spoon2
@@ -111,21 +142,23 @@ export default class FishgameScene extends Phaser.Scene {
     // bottle 1
     bottle1 = this.physics.add.sprite(
       center.x -(center.x /4),
-      center.y -(center.y /6),
+      center.y, //-(center.y /6),
       "bottle"
     );
     bottle1.setDisplaySize(center.x/6, center.y / 6);
     //bottle1.setOrigin(0, 0.5); // from which point to rotate then (x, y)
     bottle1.angle += 90; 
 
+    //bottle2
     bottle2 = this.physics.add.sprite(
-      center.x + 400,
-      center.y + 200,
+      center.x + (center.x/2),
+      center.y - center.y/8,
       "bottle"
     );
     bottle2.setScale(0.5);
     bottle2.angle += 130;
 
+    //bottle3
     bottle3 = this.physics.add.sprite(
       center.x + 179,
       center.y + 30,
@@ -133,27 +166,78 @@ export default class FishgameScene extends Phaser.Scene {
     );
     bottle3.setScale(0.3);
 
+    //bag1
     bag1 = this.physics.add.sprite(
       center.x + center.x / 1.7,
       center.y * 2 - center.y / 7,
       "bag"
     );
-    bag1.setScale(0.8);
+    bag1.setScale(0.6);
     bag1.angle += 90;
 
+    //bag2
     bag2 = this.physics.add.sprite(
-      center.x + 50,
-      center.y + 360,
+      50,
+      2* center.y - 60,
       "bag"
     );
     bag2.setScale(0.5);
     bag2.angle += 180;
+
+    //bag3
     bag3 = this.physics.add.sprite(
-      center.x + 300,
-      center.y + 300,
+      center.x + center.x/3,
+      center.y + center.y/1.3,
       "bag"
     );
     bag3.setScale(0.7);
+
+    // helm1
+    helm1 = this.physics.add.sprite(
+      center.x - (center.x /2.3),
+      30,
+      "helm"
+    );
+    helm1.scaleX = 0.2; 
+    helm1.scaleY = helm1.scaleX; 
+
+    // helm2
+    helm2 = this.physics.add.sprite(
+      center.x - (center.x /1.6),
+      center.y + (center.y / 1.1),
+      "helm"
+    );
+    helm2.scaleX = 0.3; 
+    helm2.scaleY = helm2.scaleX; 
+
+    //
+    helm3 = this.physics.add.sprite(
+      center.x + (center.x /1.1),
+      center.y/9,
+      "helm"
+    );
+    helm3.scaleX = 0.2; 
+    helm3.scaleY = helm3.scaleX; 
+
+    //jellow coral
+    jellowcoral1 = this.physics.add.image(
+      center.x - (center.x/3),
+      center.y,
+      "jellowCoral"
+    );
+    jellowcoral1.scaleX = 0.9; 
+    jellowcoral1.scaleY = jellowcoral1.scaleX; 
+    jellowcoral1.setBodySize(1, 1, true);
+
+    //waterplant
+    waterplant = this.physics.add.image(
+      center.x + (center.x/2),
+      center.y - center.y/8,
+      "waterplant"
+    );
+    waterplant.scaleX = 0.9; 
+    waterplant.scaleY = waterplant.scaleX; 
+    waterplant.setBodySize(1, 1, true);
 
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
