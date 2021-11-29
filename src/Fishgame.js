@@ -127,7 +127,7 @@ export default class FishgameScene extends Phaser.Scene {
     fishCursors = this.input.keyboard.createCursorKeys();
 
     eatingSound = this.sound.add("sound", { loop: false });
-    ouchSound = this.sound.add("soundOuch", { loop: false });
+    ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
 
     // // Timer with a function onEvent
     // this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
@@ -136,7 +136,7 @@ export default class FishgameScene extends Phaser.Scene {
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
-    //text to appear when eating wrong things
+    //text to appear when eating wrong things. Make cooler!!
     dontEatMeText = this.add.text(
       center.x + 100,
       center.y - 200,
