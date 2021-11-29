@@ -1,16 +1,11 @@
-import Phaser from "phaser"
+import Phaser from "phaser";
 
-import jellyfishSrc from "../assets/jellyfish.png"
-import plasticbottleSrc from "../assets/plasticbottle.png"
+import jellyfishSrc from "../assets/jellyfish.png";
+import plasticbottleSrc from "../assets/plasticbottle.png";
 
-let center, introText, username;  
-
-// Set-up for the username
-username = "ThisIsTheUsernameTest"; // set to "" when the input-saving is working
-sessionStorage.setItem("user", ""); // Prepare the sessionStorage
+let center, introText;
 
 export default class IntroScene extends Phaser.Scene {
-
   constructor() {
     super("Intro");
   }
@@ -18,63 +13,96 @@ export default class IntroScene extends Phaser.Scene {
   preload() {
     this.load.image("jellyfishButton", jellyfishSrc);
     this.load.image("playButton", plasticbottleSrc);
+    this.load.html("form", "form.html"); // loads in the form
   }
 
   create() {
     center = {
       x: this.physics.world.bounds.width / 2,
-      y: this.physics.world.bounds.height / 2
+      y: this.physics.world.bounds.height / 2,
     };
-    introText = this.add.text(center.x, center.y, 
-` You have to eat as much plastic as possible 
+    introText = this.add.text(
+      center.x,
+      center.y,
+      ` You have to eat as much plastic as possible 
            to save your world. 
     Each eaten plastic gives you points. 
    If you succeed to eat all the plastic,
                   you win! 
   Be afraid of the sharks and mind the time.
-               Good luck!`, {
-    font: '24px monospace',
-    fill: '#ffff00'    // text-color
-    }); 
-  introText.setOrigin(0.5, 0.5); // this sets the text 50% to the left and up of its own length and height (so its really centered)
- 
-  // Image for the playButton 
-    this.playButton = this.add.sprite(center.x, center.y + 200, "playButton").setInteractive();
+               Good luck!`,
+      {
+        font: "24px monospace",
+        fill: "#ffff00", // text-color
+      }
+    );
+    introText.setOrigin(0.5, 0.5); // this sets the text 50% to the left and up of its own length and height (so its really centered)
+
+    // Image for the playButton
+    this.playButton = this.add
+      .sprite(center.x, center.y + 200, "playButton")
+      .setInteractive();
     this.playButton.setScale(0.2);
     // Text for the playButton
-    this.gameText = this.add.text(0, 0, 'Play', { fontSize: '32px', fill: '#ffff00' });
+    this.gameText = this.add.text(0, 0, "Play", {
+      fontSize: "32px",
+      fill: "#ffff00",
+    });
     // This centers the text in the image
     this.centerButtonText(this.gameText, this.playButton);
-    
+
     // This is where the button will take the user, to the game
-    this.playButton.on('pointerdown', function (pointer) {
-      this.scene.start('Game');
-    }.bind(this));
+    this.playButton.on(
+      "pointerdown",
+      function (pointer) {
+        this.scene.start("Game");
+      }.bind(this)
+    );
 
     // This adds an hover-effect (in this case a second image)
-    this.input.on('pointerover', function (event, gameObjects) {
-      gameObjects[0].setTexture('jellyfishButton');
+    this.input.on("pointerover", function (event, gameObjects) {
+      gameObjects[0].setTexture("jellyfishButton");
     });
-    this.input.on('pointerout', function (event, gameObjects) {
-      gameObjects[0].setTexture('playButton');
+    this.input.on("pointerout", function (event, gameObjects) {
+      gameObjects[0].setTexture("playButton");
     });
-  }
 
-  update(){
-    // Here perhaps saving the username to sessionStorage when user is giving a username
-    // saving the input to the variable username
-    //then saving it to sessionStorage: 
-    sessionStorage.setItem("user", username);
+    // adding DOM element to intro page (form from form.html)
+    this.nameInput = this.add.dom(center.x, 360).createFromCache("form");
 
-  // Perhaps we could hide the play-button until the user has set a username? 
+    // Adds the welcome text on screen 
+    this.message = this.add
+      .text(center.x, 250, "Hello, --", {
+        color: "#FFFFFF",
+        fontSize: 60,
+        fontStyle: "bold",
+      })
+      .setOrigin(0.5);
 
-  }
-// This centers the text in the image for the button 
-  centerButtonText (gameText, gameButton) {
-    Phaser.Display.Align.In.Center(
-      gameText,
-      gameButton
+    // Gets the input from DOM, saves it to SS and shows it on screen
+    this.returnKey = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.ENTER
     );
+    this.returnKey.on("down", (event) => {
+      this.name = this.nameInput.getChildByName("name");
+      let nameToSave = this.name.value;
+      const formElement = document.querySelector("#input-form"); // selects the form  
+      formElement.remove(); // removes the form once you typed in your name
+      sessionStorage.setItem("user", nameToSave); // Saving username to SS
+      if (this.name.value != "") {  // Just a funny function if we want to welcome user w name
+        this.message.setText("Hello, " + nameToSave);
+
+        // TO DO: Perhaps we could hide the play-button until the user has set a username?
+      }
+    });
   }
 
+  update() {
+  
+  }
+  
+  // This centers the text in the image for the button
+  centerButtonText(gameText, gameButton) {
+    Phaser.Display.Align.In.Center(gameText, gameButton);
+  }
 }

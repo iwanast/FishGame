@@ -4,7 +4,7 @@
   "description": "A fish game with phaser",
   "main": "index.js",
   "scripts": {
-    "start": "parcel src/index.html",
+    "start": "parcel src/index.html src/form.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",

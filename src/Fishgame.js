@@ -276,14 +276,14 @@ export default class FishgameScene extends Phaser.Scene {
 
     //text to appear when eating wrong things. Make cooler!!
     dontEatMeText = this.add.text(
-      center.x + 100,
-      center.y - 200,
+      center.x,
+      center.y,
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 50,
+        fontSize: 90,
       }
-    );
+    ).setOrigin(0.5);
     dontEatMeText.visible = false;
 
     // eliminates plastics on contact + play eating sound
@@ -306,21 +306,6 @@ export default class FishgameScene extends Phaser.Scene {
       });
     });
 
-    // this.physics.add.collider(fish, turtle, function () {
-    //   ouchSound.play();
-    //   dontEatMeText.visible = true;
-    //   setTimeout(() => {
-    //     dontEatMeText.visible = false;
-    //   }, 2000); //take away msg after 2 sec
-    // });
-
-    // // if the fish collides with a friend
-    // this.physics.add.collider(fish, turtle, function () {
-    //   dontEatMeText.visible = true;
-    // });
-    // this.physics.add.collider(fish, jellyfish, function () {
-    //   dontEatMeText.visible = true;
-    // });
 
     // Creating display for score
     scoreDisplay = this.add.text(100, 100);

@@ -1,16 +1,19 @@
 import Phaser from "phaser";
 
-export default { 
+export default {
   type: Phaser.AUTO,
-  parent: "project3",
+  parent: "game",
   width: window.innerWidth,
   height: window.innerHeight,
+  dom: {
+    createContainer: true,
+  },
   physics: {
-        default: "arcade",
-        arcade: {
-          gravity: false,
-          debug: true
-          //gravity: { y: 5 },
-        }
-  }
-}
+    default: "arcade",
+    arcade: {
+      gravity: false,
+      debug: true,
+      //gravity: { y: 5 },
+    },
+  },
+};
