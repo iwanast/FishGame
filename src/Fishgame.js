@@ -13,7 +13,11 @@ import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
 import jellowcoralSrc from "../assets/jellowcoral.png";
 import waterplantSrc from "../assets/waterplant.png";
-
+import greenplantSrc from "../assets/greenplant.png";
+import blueplantSrc from "../assets/blueplant.png";
+import redplantSrc from "../assets/redplant.png";
+import sharkleftSrc from "../assets/shark.png";
+import sharkrightSrc from "../assets/sharkright.png";
 
 let bag1,
   bag2,
@@ -32,7 +36,6 @@ let bag1,
   ouchSound,
   //userScore,
   scoreDisplay,
-  fishCursors;
   munchingSound,
   fishCursors,
   helm1,
@@ -40,11 +43,17 @@ let bag1,
   helm3,
   spoon1,
   spoon2,
+  spoon3,
   straw1,
   straw2,
   straw3,
   jellowcoral1,
-  waterplant;
+  waterplant,
+  greenplant,
+  blueplant,
+  redplant,
+  sharkleft,
+  sharkright;
 
 
 let isNotRunning = false;
@@ -73,6 +82,12 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("spoon", spoonSrc);
     this.load.image("jellowCoral", jellowcoralSrc);
     this.load.image("waterplant", waterplantSrc);
+    this.load.image("redplant", redplantSrc);
+    this.load.image("greenplant", greenplantSrc);
+    this.load.image("blueplant", blueplantSrc);
+    this.load.image("sharkleft", sharkleftSrc);
+    this.load.image("sharkright", sharkrightSrc);
+
   }
 
   create() {
@@ -112,7 +127,7 @@ export default class FishgameScene extends Phaser.Scene {
       "straw"
     );
     straw2.scaleX = 0.2; 
-    straw2.scaleY = straw2.scaleX; // this is to make the scale proportionally
+    straw2.scaleY = straw2.scaleX;
 
     //straw3
     straw3 = this.physics.add.sprite(
@@ -121,10 +136,10 @@ export default class FishgameScene extends Phaser.Scene {
       "straw"
     );
     straw3.scaleX = 0.2; 
-    straw3.scaleY = straw1.scaleX; // this is to make the scale proportionally
+    straw3.scaleY = straw1.scaleX;
     straw3.angle += 40;
 
-    //Spoon1
+    //Spoon1 in the bottom left
     spoon1 = this.physics.add.sprite(
       center.x - (center.x /2),
       center.y + (center.y /1.5),
@@ -132,8 +147,10 @@ export default class FishgameScene extends Phaser.Scene {
     );
     spoon1.angle += 60; 
     spoon1.setBodySize(150, 30);
+    spoon1.scaleX = 0.4; 
+    spoon1.scaleY = spoon1.scaleX; 
 
-    //Spoon2
+    //Spoon2 up in the water
     spoon2 = this.physics.add.sprite(
       center.x - (center.x /1.7),
       center.y - (center.y /1.5),
@@ -142,46 +159,57 @@ export default class FishgameScene extends Phaser.Scene {
     spoon2.angle = -90; 
     spoon2.setBodySize(150, 30);
     spoon2.scaleX = 0.4; 
-    spoon2.scaleY = spoon2.scaleX; // this is to make the scale proportionally
+    spoon2.scaleY = spoon2.scaleX; 
+
+     //Spoon3 in the bottom right
+     spoon3 = this.physics.add.sprite(
+      center.x + (center.x /1.8),
+      center.y + (center.y /1.9),
+      "spoon"
+    );
+    spoon3.angle += 110; 
+    spoon3.setBodySize(150, 30);
+    spoon3.scaleX = 0.35; 
+    spoon3.scaleY = spoon3.scaleX; 
 
 
-    // bottle 1
+    // bottle 1 behind the yellow plant
     bottle1 = this.physics.add.sprite(
       center.x -(center.x /4),
-      center.y, //-(center.y /6),
+      center.y,
       "bottle"
     );
-    bottle1.setDisplaySize(center.x/6, center.y / 6);
-    //bottle1.setOrigin(0, 0.5); // from which point to rotate then (x, y)
+    bottle1.scaleX = 0.3; 
+    bottle1.scaleY = bottle1.scaleX;
     bottle1.angle += 90; 
 
-    //bottle2
+    //bottle2 behind the red plant
     bottle2 = this.physics.add.sprite(
-      center.x + (center.x/2),
-      center.y - center.y/8,
+      center.x - center.x/9,
+      2*center.y,
       "bottle"
     );
-    bottle2.setScale(0.5);
+    bottle2.setScale(0.3);
     bottle2.angle += 130;
 
-    //bottle3
+    //bottle3 behind the green plant
     bottle3 = this.physics.add.sprite(
-      center.x + 179,
-      center.y + 30,
+      center.x + center.x/2.5,
+      center.y - center.y/10,
       "bottle"
     );
     bottle3.setScale(0.3);
 
-    //bag1
+    //bag1 to the right fo the blue plant
     bag1 = this.physics.add.sprite(
-      center.x + center.x / 1.7,
-      center.y * 2 - center.y / 7,
+      center.x + center.x/2.3,
+      center.y * 2 - center.y / 5,
       "bag"
     );
     bag1.setScale(0.6);
     bag1.angle += 90;
 
-    //bag2
+    //bag2 behind green plant
     bag2 = this.physics.add.sprite(
       50,
       2* center.y - 60,
@@ -190,7 +218,7 @@ export default class FishgameScene extends Phaser.Scene {
     bag2.setScale(0.5);
     bag2.angle += 180;
 
-    //bag3
+    //bag3 to the left of the blue plant
     bag3 = this.physics.add.sprite(
       center.x + center.x/3,
       center.y + center.y/1.3,
@@ -241,18 +269,57 @@ export default class FishgameScene extends Phaser.Scene {
       center.y - center.y/8,
       "waterplant"
     );
-    waterplant.scaleX = 0.9; 
+    waterplant.scaleX = 0.8; 
     waterplant.scaleY = waterplant.scaleX; 
     waterplant.setBodySize(1, 1, true);
 
+    // greenplant
+    greenplant = this.physics.add.image(
+      center.x - (center.x/1.2),
+      center.y + center.y/1.3,
+      "greenplant"
+    );
+    greenplant.scaleX = 0.9; 
+    greenplant.scaleY = greenplant.scaleX; 
+    greenplant.setBodySize(1, 1, true);
+
+    //redplant
+    redplant = this.physics.add.image(
+      center.x,
+      center.y + center.y/1.3,
+      "redplant"
+    );
+    redplant.scaleX = 0.9; 
+    redplant.scaleY = redplant.scaleX; 
+    redplant.setBodySize(1, 1, true);
+
+     //blueplant
+     blueplant = this.physics.add.image(
+      center.x + center.x/2.4,
+      center.y + center.y/1.2,
+      "blueplant"
+    );
+    blueplant.scaleX = 0.9; 
+    blueplant.scaleY = blueplant.scaleX; 
+    blueplant.setBodySize(1, 1, true);
+
     // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
     const plastics = [
-      plasticbottle1,
-      plasticbottle2,
-      plasticbottle3,
-      plasticbag1,
-      plasticbag2,
-      plasticbag3,
+      helm1,
+      helm2,
+      helm3,
+      spoon1,
+      spoon2,
+      spoon3,
+      straw1,
+      straw2,
+      straw3,
+      bottle1,
+      bottle2,
+      bottle3,
+      bag1,
+      bag2,
+      bag3,
     ];
 
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
@@ -296,7 +363,7 @@ export default class FishgameScene extends Phaser.Scene {
     // eliminates plastics on contact + play eating sound
     plastics.forEach(plastic => {
       this.physics.add.collider(fish, plastic, function () {
-        eatingSound.play();
+        munchingSound.play();
         plastic.destroy();
         userScore++;
       });
@@ -323,7 +390,6 @@ export default class FishgameScene extends Phaser.Scene {
     if (fishCursors.up.isDown) {
       fish.y -= 2;
       fish.setVelocity(0, -600);
-      
     }
     if (fishCursors.down.isDown) {
       fish.y += 2;
