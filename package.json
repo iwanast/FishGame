@@ -7,6 +7,7 @@
     "start": "parcel src/index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "type": "module",
   "author": "Tintin Hamrin, Mohammad Moazzen, Iwana Städeli",
   "license": "ISC",
   "dependencies": {
@@ -14,5 +15,8 @@
     "parcel-bundler": "^1.12.5",
     "phaser": "^3.55.2",
     "regenerator-runtime": "^0.13.9"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.1"
   }
 }
