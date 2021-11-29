@@ -9,6 +9,3 @@ jspm_packages/
 .vscode
 .cache/
 dist/
-.parcel-cache/data.mdb
-.parcel-cache/f29bd700a54591da.txt
-.parcel-cache/lock.mdb
