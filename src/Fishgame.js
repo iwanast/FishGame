@@ -247,12 +247,12 @@ export default class FishgameScene extends Phaser.Scene {
       straw3,
     ];
 
-    const friends = [turtle, jellyfish];
-
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
     turtle.setBodySize(40, 40, true);
+
+    const friends = [turtle, jellyfish];
 
     fish = this.physics.add.sprite(center.x + 300, center.y - 250, "fish");
     fish.setScale(0.8);
