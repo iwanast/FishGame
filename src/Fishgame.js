@@ -6,12 +6,14 @@ import oceanSrc from "../assets/ocean.png";
 import fishSrc from "../assets/fish.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
+import soundOuchSrc from "../assets/ouch.wav";
 import soundMunchingSrc from "../assets/fastMunching.wav";
 import helmSrc from "../assets/helm.png";
 import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
 import jellowcoralSrc from "../assets/jellowcoral.png";
 import waterplantSrc from "../assets/waterplant.png";
+
 
 let bag1,
   bag2,
@@ -27,8 +29,11 @@ let bag1,
   turtle,
   dontEatMeText,
   eatingSound,
+  ouchSound,
+  //userScore,
+  scoreDisplay,
+  fishCursors;
   munchingSound,
-  userScore,
   fishCursors,
   helm1,
   helm2,
@@ -41,11 +46,11 @@ let bag1,
   jellowcoral1,
   waterplant;
 
- 
+
 let isNotRunning = false;
 
 // For the scores
-userScore = 3;
+let userScore = 0;
 sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
@@ -61,6 +66,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
+    this.load.audio("soundOuch", soundOuchSrc);
     this.load.audio("soundMunching", soundMunchingSrc);
     this.load.image("helm", helmSrc);
     this.load.image("straw", strawSrc);
@@ -239,6 +245,16 @@ export default class FishgameScene extends Phaser.Scene {
     waterplant.scaleY = waterplant.scaleX; 
     waterplant.setBodySize(1, 1, true);
 
+    // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
+    const plastics = [
+      plasticbottle1,
+      plasticbottle2,
+      plasticbottle3,
+      plasticbag1,
+      plasticbag2,
+      plasticbag3,
+    ];
+
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
@@ -251,24 +267,58 @@ export default class FishgameScene extends Phaser.Scene {
     fishCursors = this.input.keyboard.createCursorKeys();
 
     eatingSound = this.sound.add("sound", { loop: false });
+    ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
+
+    // // Timer with a function onEvent
+    // this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
+    // timerText = this.add.text(center.x, 10); // the text for the timer
     munchingSound = this.sound.add("soundMunching", { loop: false });
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
 
+
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
-    //text to appear when eating wrong things
-    dontEatMeText = this.add.text(center.x + 200, center.y - 200, 'Dont eat me!', { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', fontSize: 50 });
+    //text to appear when eating wrong things. Make cooler!!
+    dontEatMeText = this.add.text(
+      center.x + 100,
+      center.y - 200,
+      "Dont eat me!",
+      {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: 50,
+      }
+    );
     dontEatMeText.visible = false;
-  
+
+    // eliminates plastics on contact + play eating sound
+    plastics.forEach(plastic => {
+      this.physics.add.collider(fish, plastic, function () {
+        eatingSound.play();
+        plastic.destroy();
+        userScore++;
+      });
+    });
+
+    // if the fish collides with a friend
+    this.physics.add.collider(fish, turtle, function () {
+      ouchSound.play();
+      dontEatMeText.visible = true;
+      setTimeout(() => {
+        dontEatMeText.visible = false;
+      }, 2000); //take away msg after 2 sec
+    });
+
+    // Creating display for score
+    scoreDisplay = this.add.text(100, 100);
   }
 
-    
-    
-
   update() {
+    // Updates the score on screen
+    scoreDisplay.setText(`Score: ${userScore}`);
+
     // Making the fish move up and down with arrows
     if (fishCursors.up.isDown) {
       fish.y -= 2;
@@ -276,17 +326,14 @@ export default class FishgameScene extends Phaser.Scene {
       
     }
     if (fishCursors.down.isDown) {
-      //console.log("down");
       fish.y += 2;
       fish.setVelocity(0, 600);
     }
     if (fishCursors.right.isDown) {
-      //console.log("right");
       fish.x += 2;
       fish.setVelocity(600, 0);
     }
     if (fishCursors.left.isDown) {
-      //console.log("left");
       fish.x -= 2;
       fish.setVelocity(-600, 0);
     }
@@ -294,6 +341,7 @@ export default class FishgameScene extends Phaser.Scene {
     {
       fish.setVelocity(0, 0)
     }
+
 
     // eliminates the bottle on contact
     this.physics.add.collider(fish, bottle1, function () {
@@ -317,6 +365,7 @@ export default class FishgameScene extends Phaser.Scene {
         this.timedEvent.getRemainingSeconds().toString().substr(0, 4)
     );
 
+
     if (!isNotRunning) {
       // Here the game in with the movements.
     }
@@ -326,6 +375,8 @@ export default class FishgameScene extends Phaser.Scene {
   //   isNotRunning = true;
   //   this.scene.start("Score");
   // }
+
+
   onEvent() {
     isNotRunning = true; 
     // Saving the userScore to sessionStorage
