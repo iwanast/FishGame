@@ -14,11 +14,13 @@ import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
 import jellowcoralSrc from "../assets/jellowcoral.png";
 import waterplantSrc from "../assets/waterplant.png";
+
 import greenplantSrc from "../assets/greenplant.png";
 import blueplantSrc from "../assets/blueplant.png";
 import redplantSrc from "../assets/redplant.png";
 import sharkleftSrc from "../assets/shark.png";
 import sharkrightSrc from "../assets/sharkright.png";
+
 
 let bag1,
   bag2,
@@ -58,9 +60,9 @@ let bag1,
   sharkleft,
   sharkright;
 
+
   // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
   let plastics = [];
-
 let isNotRunning = false;
 
 // For the scores
@@ -81,6 +83,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
     this.load.audio("soundOuch", soundOuchSrc);
+
     this.load.audio("soundMunching", soundMunchingSrc);
     this.load.audio("soundShark", soundSharkSrc);
     this.load.image("helm", helmSrc);
@@ -104,11 +107,11 @@ export default class FishgameScene extends Phaser.Scene {
     // Backgroundimage
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setDisplaySize(center.x * 2, center.y * 2);
-    
+
     // Jellyfish
     jellyfish = this.physics.add.sprite(
-      center.x - (center.x /2),
-      center.y - (center.y /1.5),
+      center.x + center.x / 2,
+      center.y - center.y / 1.5,
       "jellyfish"
     );
     jellyfish.setDisplaySize(center.x / 4, center.y / 4);
@@ -117,54 +120,58 @@ export default class FishgameScene extends Phaser.Scene {
 
     //straw1
     straw1 = this.physics.add.sprite(
-      center.x - (center.x /3),
+      center.x - center.x / 3,
       center.y - center.y / 5,
       "straw"
     );
-    straw1.scaleX = 0.2; 
+    straw1.scaleX = 0.2;
     straw1.scaleY = straw1.scaleX; // this is to make the scale proportionally
     straw1.angle += 23;
 
     //straw2
     straw2 = this.physics.add.sprite(
-      center.x - (center.x /1.3),
-      center.y + (center.y / 2.8),
+      center.x - center.x / 1.3,
+      center.y + center.y / 2.8,
       "straw"
     );
-    straw2.scaleX = 0.2; 
-    straw2.scaleY = straw2.scaleX;
+
+    straw2.scaleX = 0.2;
+    straw2.scaleY = straw2.scaleX; // this is to make the scale proportionally
+
 
     //straw3
     straw3 = this.physics.add.sprite(
-      center.x - (center.x /6),
+      center.x - center.x / 6,
       center.y - center.y / 5,
       "straw"
     );
-    straw3.scaleX = 0.2; 
-    straw3.scaleY = straw1.scaleX;
+
+    straw3.scaleX = 0.2;
+    straw3.scaleY = straw1.scaleX; // this is to make the scale proportionally
+
     straw3.angle += 40;
 
     //Spoon1 in the bottom left
     spoon1 = this.physics.add.sprite(
-      center.x - (center.x /2),
-      center.y + (center.y /1.5),
+      center.x - center.x / 2,
+      center.y + center.y / 1.5,
       "spoon"
     );
-    spoon1.angle += 60; 
+    spoon1.angle += 60;
     spoon1.setBodySize(150, 30);
     spoon1.scaleX = 0.4; 
     spoon1.scaleY = spoon1.scaleX; 
 
     //Spoon2 up in the water
     spoon2 = this.physics.add.sprite(
-      center.x - (center.x /1.7),
-      center.y - (center.y /1.5),
+      center.x - center.x / 1.7,
+      center.y - center.y / 1.5,
       "spoon"
     );
-    spoon2.angle = -90; 
+    spoon2.angle = -90;
     spoon2.setBodySize(150, 30);
-    spoon2.scaleX = 0.4; 
-    spoon2.scaleY = spoon2.scaleX; 
+    spoon2.scaleX = 0.4;
+    spoon2.scaleY = spoon2.scaleX; // this is to make the scale proportionally
 
      //Spoon3 in the bottom right
      spoon3 = this.physics.add.sprite(
@@ -196,6 +203,7 @@ export default class FishgameScene extends Phaser.Scene {
     bottle1.scaleY = bottle1.scaleX;
     bottle1.angle += 90; 
 
+
     //bottle2 behind the red plant
     bottle2 = this.physics.add.sprite(
       center.x - center.x/9,
@@ -213,6 +221,7 @@ export default class FishgameScene extends Phaser.Scene {
     );
     sharkleft.setScale(0.3);
 
+
     //bottle3 behind the green plant
     bottle3 = this.physics.add.sprite(
       center.x + center.x/2.5,
@@ -220,8 +229,6 @@ export default class FishgameScene extends Phaser.Scene {
       "bottle"
     );
     bottle3.setScale(0.3);
-
-    
 
     //bag1 to the right fo the blue plant
     bag1 = this.physics.add.sprite(
@@ -243,38 +250,34 @@ export default class FishgameScene extends Phaser.Scene {
 
     //bag3 to the left of the blue plant
     bag3 = this.physics.add.sprite(
-      center.x + center.x/3,
-      center.y + center.y/1.3,
+      center.x + center.x / 3,
+      center.y + center.y / 1.3,
       "bag"
     );
     bag3.setScale(0.7);
 
     // helm1
-    helm1 = this.physics.add.sprite(
-      center.x - (center.x /2.3),
-      30,
-      "helm"
-    );
-    helm1.scaleX = 0.2; 
-    helm1.scaleY = helm1.scaleX; 
+    helm1 = this.physics.add.sprite(center.x - center.x / 2.3, 30, "helm");
+    helm1.scaleX = 0.2;
+    helm1.scaleY = helm1.scaleX;
 
     // helm2
     helm2 = this.physics.add.sprite(
-      center.x - (center.x /1.6),
-      center.y + (center.y / 1.1),
+      center.x - center.x / 1.6,
+      center.y + center.y / 1.1,
       "helm"
     );
-    helm2.scaleX = 0.3; 
-    helm2.scaleY = helm2.scaleX; 
+    helm2.scaleX = 0.3;
+    helm2.scaleY = helm2.scaleX;
 
     //
     helm3 = this.physics.add.sprite(
-      center.x + (center.x /1.1),
-      center.y/9,
+      center.x + center.x / 1.1,
+      center.y / 9,
       "helm"
     );
-    helm3.scaleX = 0.2; 
-    helm3.scaleY = helm3.scaleX; 
+    helm3.scaleX = 0.2;
+    helm3.scaleY = helm3.scaleX;
 
 
   // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
@@ -295,22 +298,21 @@ export default class FishgameScene extends Phaser.Scene {
     bag2,
     bag3
   ];
-console.log(plastics)
 
     //jellow coral
     jellowcoral1 = this.physics.add.image(
-      center.x - (center.x/3),
+      center.x - center.x / 3,
       center.y,
       "jellowCoral"
     );
-    jellowcoral1.scaleX = 0.9; 
-    jellowcoral1.scaleY = jellowcoral1.scaleX; 
+    jellowcoral1.scaleX = 0.9;
+    jellowcoral1.scaleY = jellowcoral1.scaleX;
     jellowcoral1.setBodySize(1, 1, true);
 
     //waterplant
     waterplant = this.physics.add.image(
-      center.x + (center.x/2),
-      center.y - center.y/8,
+      center.x + center.x / 2,
+      center.y - center.y / 8,
       "waterplant"
     );
     waterplant.scaleX = 0.8; 
@@ -350,7 +352,9 @@ console.log(plastics)
     turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
-    turtle.setBodySize(40, 40, true)
+    turtle.setBodySize(40, 40, true);
+
+    const friends = [turtle, jellyfish];
 
     fish = this.physics.add.sprite(center.x + 300, center.y - 250, "fish");
     fish.setScale(0.8);
@@ -363,10 +367,10 @@ console.log(plastics)
     ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
     sharkSound = this.sound.add("soundShark", { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
+
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
-
 
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
@@ -378,10 +382,11 @@ console.log(plastics)
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 50,
+        fontSize: 90,
       }
-    );
+    ).setOrigin(0.5);
     dontEatMeText.visible = false;
+
 
     //text to appear when shark appears. Make cooler!!
     hideText = this.add.text(
@@ -486,18 +491,20 @@ console.log(plastics)
       fish.setVelocity(-600, 0);
       fish.setFlipX(10);
     }
-    if(!fishCursors.left.isDown && !fishCursors.up.isDown && !fishCursors.down.isDown && !fishCursors.right.isDown)
-    {
-      fish.setVelocity(0, 0)
+    if (
+      !fishCursors.left.isDown &&
+      !fishCursors.up.isDown &&
+      !fishCursors.down.isDown &&
+      !fishCursors.right.isDown
+    ) {
+      fish.setVelocity(0, 0);
     }
-    
 
     // Timer direct running when all loaded and displayed here.
     timerText.setText(
       "Time left: " +
         this.timedEvent.getRemainingSeconds().toString().substr(0, 4)
     );
-
 
     if (!isNotRunning) {
       // Here the game in with the movements.
@@ -509,11 +516,10 @@ console.log(plastics)
   //   this.scene.start("Score");
   // }
 
-
   onEvent() {
-    isNotRunning = true; 
+    isNotRunning = true;
     // Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-      //this.scene.start("Score");
+    //this.scene.start("Score");
   }
 }
