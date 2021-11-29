@@ -107,7 +107,7 @@ export default class FishgameScene extends Phaser.Scene {
     );
     plasticbag3.setScale(0.2);
 
-    // Creating an array of all plastics that we can use to erase them ontouch
+    // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
     const plastics = [
       plasticbottle1,
       plasticbottle2,
