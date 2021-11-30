@@ -51,6 +51,10 @@ export default class IntroScene extends Phaser.Scene {
     // This centers the text in the image
     this.centerButtonText(this.gameText, this.playButton);
 
+    //
+    this.playButton.visible = false;
+    this.gameText.visible = false;
+
     // This is where the button will take the user, to the game
     this.playButton.on(
       "pointerdown",
@@ -70,7 +74,7 @@ export default class IntroScene extends Phaser.Scene {
     // adding DOM element to intro page (form from form.html)
     this.nameInput = this.add.dom(center.x, 360).createFromCache("form");
 
-    // Adds the welcome text on screen 
+    // Adds the welcome text on screen
     this.message = this.add
       .text(center.x, 250, "Hello, --", {
         color: "#FFFFFF",
@@ -86,21 +90,20 @@ export default class IntroScene extends Phaser.Scene {
     this.returnKey.on("down", (event) => {
       this.name = this.nameInput.getChildByName("name");
       let nameToSave = this.name.value;
-      const formElement = document.querySelector("#input-form"); // selects the form  
+      const formElement = document.querySelector("#input-form"); // selects the form
       formElement.remove(); // removes the form once you typed in your name
       sessionStorage.setItem("user", nameToSave); // Saving username to SS
-      if (this.name.value != "") {  // Just a funny function if we want to welcome user w name
+      if (this.name.value != "") {
+        // Just a funny function if we want to welcome user w name
         this.message.setText("Hello, " + nameToSave);
-
-        // TO DO: Perhaps we could hide the play-button until the user has set a username?
       }
+      this.playButton.visible = true; //setting the play button to visible
+      this.gameText.visible = true;
     });
   }
 
-  update() {
-  
-  }
-  
+  update() {}
+
   // This centers the text in the image for the button
   centerButtonText(gameText, gameButton) {
     Phaser.Display.Align.In.Center(gameText, gameButton);
