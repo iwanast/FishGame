@@ -65,7 +65,6 @@ let bag1,
 
 // For the scores
 let userScore = 0;
-sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
   constructor() {
@@ -97,6 +96,7 @@ export default class FishgameScene extends Phaser.Scene {
   }
 
   create() {
+    userScore = 0; 
     center = {
       x: this.physics.world.bounds.width / 2,
       y: this.physics.world.bounds.height / 2,
@@ -511,12 +511,6 @@ export default class FishgameScene extends Phaser.Scene {
   onEvent() {
     //Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-    //resetGame();
     this.scene.start("Score");
-  }
-
-  resetGame() {
-    userScore = 0; 
-    fish.setPosition(center.x, center.y);
   }
 }

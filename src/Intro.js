@@ -4,7 +4,6 @@ import jellyfishSrc from "../assets/jellyfish.png";
 import plasticbottleSrc from "../assets/plasticbottle.png";
 
 let center, introText;
-sessionStorage.setItem("user", ""); // Empty the name in sessionStorage
 
 export default class IntroScene extends Phaser.Scene {
   constructor() {

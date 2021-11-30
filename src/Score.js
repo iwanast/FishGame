@@ -17,7 +17,7 @@ const scoreTextArray = [
   Keep looking under the surface!`,
   `
   You are still in deep water, keep the humor up and help your friends to survive
-  Some have already died! 
+  Some have already died. 
 
   You want a hint? There are five different sort of plastic.`, 
   `
