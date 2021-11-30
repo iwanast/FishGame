@@ -37,7 +37,6 @@ let bag1,
   dontEatMeText,
   eatingSound,
   ouchSound,
-  //userScore,
   scoreDisplay,
   munchingSound,
   sharkSound,
@@ -63,11 +62,9 @@ let bag1,
 
   // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
   let plastics = [];
-let isNotRunning = false;
 
 // For the scores
 let userScore = 0;
-sessionStorage.setItem("score", 0); // Prepare the sessionStorage
 
 export default class FishgameScene extends Phaser.Scene {
   constructor() {
@@ -99,6 +96,7 @@ export default class FishgameScene extends Phaser.Scene {
   }
 
   create() {
+    userScore = 0; 
     center = {
       x: this.physics.world.bounds.width / 2,
       y: this.physics.world.bounds.height / 2,
@@ -356,7 +354,7 @@ export default class FishgameScene extends Phaser.Scene {
 
     const friends = [turtle, jellyfish];
 
-    fish = this.physics.add.sprite(center.x + 300, center.y - 250, "fish");
+    fish = this.physics.add.sprite(center.x, center.y, "fish");
     fish.setScale(0.8);
     fish.setBodySize(100, 100, true);
     // setting cursors for fish
@@ -369,7 +367,7 @@ export default class FishgameScene extends Phaser.Scene {
     munchingSound = this.sound.add("soundMunching", { loop: false });
 
     // Timer with a function onEvent
-    this.timedEvent = this.time.delayedCall(1000, this.onEvent, [], this);
+    this.timedEvent = this.time.delayedCall(30000, this.onEvent, [], this);
     timerText = this.add.text(center.x, 10); // the text for the timer
 
     //so the fish cant escape the screen
@@ -378,26 +376,25 @@ export default class FishgameScene extends Phaser.Scene {
     //text to appear when eating wrong things. Make cooler!!
     dontEatMeText = this.add.text(
       center.x,
-      center.y,
+      center.y - center.y/2,
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: 90,
       }
-    ).setOrigin(0.5);
+    ).setOrigin(0.5, 0);
     dontEatMeText.visible = false;
-
 
     //text to appear when shark appears. Make cooler!!
     hideText = this.add.text(
       center.x,
-      center.y,
+      center.y - center.y/2,
       "You have to hide! There is a shark!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
         fontSize: 50,
       }
-    );
+    ).setOrigin(0.5, 0);;
     hideText.visible = false;
 
     // // eliminates plastics on contact + play eating sound + takes it away from the array
@@ -412,12 +409,16 @@ export default class FishgameScene extends Phaser.Scene {
         if(plastic == bottle3 || plastic == bottle1) {
           if(plastic == bottle3){
             sharkleft.setVelocity(-400, 0);
-            sharkSound.play();
+            setTimeout(() => {
+              sharkSound.play();
+            }, 200); 
             fish.setPosition(center.x, center.y*2);
           }
           else if(plastic == bottle1){
             sharkright.setVelocity(400, 0);
-            sharkSound.play();
+            setTimeout(() => {
+              sharkSound.play();
+            }, 200); 
             fish.setPosition(center.x, center.y*2);
           }
           hideText.visible = true;
@@ -426,7 +427,7 @@ export default class FishgameScene extends Phaser.Scene {
           }, 2000); //take away msg after 2 sec
         }
         plastic.destroy();
-        userScore++;
+        userScore = userScore + 10;
       });
     });
     
@@ -449,7 +450,7 @@ export default class FishgameScene extends Phaser.Scene {
     });
 
     // Creating display for score
-    scoreDisplay = this.add.text(100, 100);
+    scoreDisplay = this.add.text(center.x, 50);
   }
   
 
@@ -505,21 +506,11 @@ export default class FishgameScene extends Phaser.Scene {
       "Time left: " +
         this.timedEvent.getRemainingSeconds().toString().substr(0, 4)
     );
-
-    if (!isNotRunning) {
-      // Here the game in with the movements.
-    }
   }
 
-  // onEvent() {
-  //   isNotRunning = true;
-  //   this.scene.start("Score");
-  // }
-
   onEvent() {
-    isNotRunning = true;
-    // Saving the userScore to sessionStorage
+    //Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-    //this.scene.start("Score");
+    this.scene.start("Score");
   }
 }

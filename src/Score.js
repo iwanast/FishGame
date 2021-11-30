@@ -5,8 +5,43 @@ import {getScoreAndUsername, arrayScores} from "./firebase"
 import jellyfishSrc from "../assets/jellyfish.png"
 import plasticbottleSrc from "../assets/plasticbottle.png"
 
-let center, scoreText;
+let center, scoreText, bestScoreText, userscore, username;
 
+const scoreTextArray = [
+  `
+  Most of your friends die
+  and you too. 
+  Better luck next time!
+  
+  You want a hint? The plastic is often the same color as where its tangled in.
+  Keep looking under the surface!`,
+  `
+  You are still in deep water, keep the humor up and help your friends to survive
+  Some have already died. 
+
+  You want a hint? There are five different sort of plastic.`, 
+  `
+  Its always better to look under the surface real focused and you are focused! 
+  But not yet enough. 
+
+  You want a hint? Each plasticsort exists so many times as the number which should give luck`,
+  `
+  You have reached the middle and saved halv of your friends. 
+  You may survive at this point but probably not.
+  
+  You want a hint? Rosa and yellow swimming in the water are not always fishes`,
+  `
+  Wow what a deep concentration you have! 
+  Still there are plastic missing.
+  
+  Hint: Think about the little straws how much damage they do! `,
+  `
+  You are a real friend and have helped clean the ocean!
+  Your friends will survive and will give you a special funeral. 
+  Only a not polluted ocean could be better!`,];
+
+       
+console.log("ScoreTextArray: " + scoreTextArray[0])        
 export default class ScoreScene extends Phaser.Scene {
 
   constructor() {
@@ -48,7 +83,6 @@ export default class ScoreScene extends Phaser.Scene {
    this.input.on('pointerout', function (event, gameObjects) {
      gameObjects[0].setTexture('introButton');
    });
-
 }
 
   update(){
@@ -68,19 +102,49 @@ export default class ScoreScene extends Phaser.Scene {
 
   // Sets the text in the Score-page after the firebase-highscores are uppdated and called
   setScoreText(arrayScores){
-    scoreText = this.add.text(center.x, 30, ` Your score is: 20
-  Most of your friends die
-  and you too. 
-  Better luck next time!
-  
-  Best score from user ${arrayScores[0].username} with ${arrayScores[0].score}
-  Second comes user ${arrayScores[1].username} with ${arrayScores[1].score}
+
+    userscore = JSON.parse(sessionStorage.getItem("score"));
+    username = sessionStorage.getItem("user"); 
+
+    let textForTheReachedScore = ""; 
+
+    if(userscore <= 30){
+      textForTheReachedScore = scoreTextArray[0]
+    } else if(userscore <= 60){
+      textForTheReachedScore = scoreTextArray[1]
+    } else if(userscore <= 90){
+      textForTheReachedScore =  scoreTextArray[2]
+    } else if(userscore <= 120){
+      textForTheReachedScore =  scoreTextArray[3]
+    } else if(userscore <= 149){
+      textForTheReachedScore =  scoreTextArray[4]
+    } else if (userscore >= 150){
+      textForTheReachedScore =  scoreTextArray[5]
+    }
+   
+
+    scoreText = this.add.text(center.x, center.y -center.y/1.5, `
+    ${username}, your score is: ${userscore}
+    ${textForTheReachedScore}
   `, {
     font: '24px monospace',
+    align: "center", 
+
+    
     fill: '#ffff00'    // text-color
   });
   
   scoreText.setOrigin(0.5, 0); // this sets the text 50% to the left of its own length (so its really centered)
 
-  }
+
+  bestScoreText = this.add.text(center.x, center.y, `
+  Best scores
+  1. ${arrayScores[0].username} with ${arrayScores[0].score}
+  2. ${arrayScores[1].username} with ${arrayScores[1].score}
+  3. ${arrayScores[2].username} with ${arrayScores[2].score}`, {
+    font: '24px monospace',
+    fill: '#ffff00'    // text-color 
+  }).setOrigin(0.5, 0);;
+
+  }  
 }
