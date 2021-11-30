@@ -43,7 +43,7 @@ export default class IntroScene extends Phaser.Scene {
       }
     );
     introText.setOrigin(0.5, 0.5); // this sets the text 50% to the left and up of its own length and height (so its really centered)
-
+    introText.visible = false;
     // Image for the playButton
     this.playButton = this.add
       .sprite(center.x, center.y + 200, "playButton")
@@ -105,6 +105,7 @@ export default class IntroScene extends Phaser.Scene {
       }
       this.playButton.visible = true; //setting the play button to visible
       this.gameText.visible = true;
+      introText.visible = true;
     });
   }
 
