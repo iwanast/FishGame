@@ -42,9 +42,9 @@ async function getScoreAndUsername(callback) {
   //When game is functioning, we do not cancel out this anymore, but for now we do not want to save all the scores each time we restart
   //storeScoreInFireStore(username, score); 
 
-  // take now from Firestore the best 2
+  // take now from Firestore the best 3 scores
   const highScoreCol = collection(db, 'highscore')
-  const q =  query(highScoreCol, orderBy("score", "desc"), limit(2))
+  const q =  query(highScoreCol, orderBy("score", "desc"), limit(3))
   const querySnapshot = await getDocs(q); 
   populateHighscoreArray(querySnapshot); 
   callback(arrayScores)

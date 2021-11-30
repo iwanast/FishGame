@@ -4,6 +4,7 @@ import jellyfishSrc from "../assets/jellyfish.png";
 import plasticbottleSrc from "../assets/plasticbottle.png";
 
 let center, introText;
+sessionStorage.setItem("user", ""); // Empty the name in sessionStorage
 
 export default class IntroScene extends Phaser.Scene {
   constructor() {
@@ -17,6 +18,9 @@ export default class IntroScene extends Phaser.Scene {
   }
 
   create() {
+
+    sessionStorage.setItem("user", ""); // Empty the name in sessionStorage
+    sessionStorage.setItem("score", 0); // Prepare the sessionStorage and set it to zero again
     center = {
       x: this.physics.world.bounds.width / 2,
       y: this.physics.world.bounds.height / 2,
@@ -24,15 +28,18 @@ export default class IntroScene extends Phaser.Scene {
     introText = this.add.text(
       center.x,
       center.y,
-      ` You have to eat as much plastic as possible 
-           to save your world. 
-    Each eaten plastic gives you points. 
-   If you succeed to eat all the plastic,
-                  you win! 
-  Be afraid of the sharks and mind the time.
-               Good luck!`,
+      ` 
+      You have to eat as much plastic as possible 
+      to save your friends. 
+      Each eaten plastic gives you points. 
+      If you succeed to eat all the plastic,
+      you win! 
+      Be afraid of the sharks and mind the time.
+      Good luck!
+      `,
       {
         font: "24px monospace",
+        align: "center", 
         fill: "#ffff00", // text-color
       }
     );
@@ -45,7 +52,7 @@ export default class IntroScene extends Phaser.Scene {
     this.playButton.setScale(0.2);
     // Text for the playButton
     this.gameText = this.add.text(0, 0, "Play", {
-      fontSize: "32px",
+      font: "32px monospace",
       fill: "#ffff00",
     });
     // This centers the text in the image
