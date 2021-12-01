@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import jellyfishSrc from "../assets/jellyfish.png";
+import bluejellyfishSrc from "../assets/bluejellyfish.png";
 import bagSrc from "../assets/bag.png";
 import bottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
@@ -9,12 +10,13 @@ import soundSrc from "../assets/soundfx.wav";
 import soundOuchSrc from "../assets/ouch.wav";
 import soundSharkSrc from "../assets/sharkSound.wav";
 import soundMunchingSrc from "../assets/fastMunching.wav";
+import soundCheeringSrc from "../assets/cheering.wav";
+import soundDisapprovingSrc from "../assets/disapproving.wav";
 import helmSrc from "../assets/helm.png";
 import strawSrc from "../assets/straw.png";
 import spoonSrc from "../assets/spoon.png";
 import jellowcoralSrc from "../assets/jellowcoral.png";
 import waterplantSrc from "../assets/waterplant.png";
-
 import greenplantSrc from "../assets/greenplant.png";
 import blueplantSrc from "../assets/blueplant.png";
 import redplantSrc from "../assets/redplant.png";
@@ -25,6 +27,7 @@ import sharkrightSrc from "../assets/sharkright.png";
 let bag1,
   bag2,
   bag3,
+  bluejellyfish,
   jellyfish,
   ocean,
   center,
@@ -34,12 +37,16 @@ let bag1,
   timerText,
   fish,
   turtle,
+  dontDisturbMeText,
   dontEatMeText,
+  keepGoingText,
   eatingSound,
   ouchSound,
   scoreDisplay,
   munchingSound,
   sharkSound,
+  cheeringSound,
+  disapprovingSound,
   fishCursors,
   hideText,
   helm1,
@@ -74,13 +81,15 @@ export default class FishgameScene extends Phaser.Scene {
   preload() {
     this.load.image("bag", bagSrc);
     this.load.image("jellyfish", jellyfishSrc);
+    this.load.image("bluejellyfish", bluejellyfishSrc);
     this.load.image("ocean", oceanSrc);
     this.load.image("bottle", bottleSrc);
     this.load.image("fish", fishSrc);
     this.load.image("turtle", turtleSrc);
     this.load.audio("sound", soundSrc);
     this.load.audio("soundOuch", soundOuchSrc);
-
+    this.load.audio("soundCheering", soundCheeringSrc);
+    this.load.audio("soundDisapproving", soundDisapprovingSrc);
     this.load.audio("soundMunching", soundMunchingSrc);
     this.load.audio("soundShark", soundSharkSrc);
     this.load.image("helm", helmSrc);
@@ -106,16 +115,6 @@ export default class FishgameScene extends Phaser.Scene {
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setDisplaySize(center.x * 2, center.y * 2);
 
-    // Jellyfish
-    jellyfish = this.physics.add.sprite(
-      center.x + center.x / 2,
-      center.y - center.y / 1.5,
-      "jellyfish"
-    );
-    jellyfish.setDisplaySize(center.x / 4, center.y / 4);
-    jellyfish.setBodySize(20, 20, true); // does not change the displaySize only the size to interact with
-    jellyfish.setImmovable(true);
-
     //straw1
     straw1 = this.physics.add.sprite(
       center.x - center.x / 3,
@@ -132,10 +131,8 @@ export default class FishgameScene extends Phaser.Scene {
       center.y + center.y / 2.8,
       "straw"
     );
-
     straw2.scaleX = 0.2;
     straw2.scaleY = straw2.scaleX; // this is to make the scale proportionally
-
 
     //straw3
     straw3 = this.physics.add.sprite(
@@ -143,10 +140,8 @@ export default class FishgameScene extends Phaser.Scene {
       center.y - center.y / 5,
       "straw"
     );
-
     straw3.scaleX = 0.2;
     straw3.scaleY = straw1.scaleX; // this is to make the scale proportionally
-
     straw3.angle += 40;
 
     //Spoon1 in the bottom left
@@ -182,14 +177,13 @@ export default class FishgameScene extends Phaser.Scene {
     spoon3.scaleX = 0.35; 
     spoon3.scaleY = spoon3.scaleX; 
 
-
-      //shark behind the bottle1 behind the yellow plant
-      sharkright = this.physics.add.sprite(
-        center.x -(center.x /4),
-        center.y,
-        "sharkright"
-      );
-      sharkright.setScale(0.3);
+    //shark behind the bottle1 behind the yellow plant
+    sharkright = this.physics.add.sprite(
+      center.x -(center.x /4),
+      center.y,
+      "sharkright"
+    );
+    sharkright.setScale(0.3);
 
     // bottle 1 behind the yellow plant
     bottle1 = this.physics.add.sprite(
@@ -200,7 +194,6 @@ export default class FishgameScene extends Phaser.Scene {
     bottle1.scaleX = 0.3; 
     bottle1.scaleY = bottle1.scaleX;
     bottle1.angle += 90; 
-
 
     //bottle2 behind the red plant
     bottle2 = this.physics.add.sprite(
@@ -218,7 +211,6 @@ export default class FishgameScene extends Phaser.Scene {
       "sharkleft"
     );
     sharkleft.setScale(0.3);
-
 
     //bottle3 behind the green plant
     bottle3 = this.physics.add.sprite(
@@ -254,12 +246,12 @@ export default class FishgameScene extends Phaser.Scene {
     );
     bag3.setScale(0.7);
 
-    // helm1
+    // helm 1
     helm1 = this.physics.add.sprite(center.x - center.x / 2.3, 30, "helm");
     helm1.scaleX = 0.2;
     helm1.scaleY = helm1.scaleX;
 
-    // helm2
+    // helm 2
     helm2 = this.physics.add.sprite(
       center.x - center.x / 1.6,
       center.y + center.y / 1.1,
@@ -268,7 +260,7 @@ export default class FishgameScene extends Phaser.Scene {
     helm2.scaleX = 0.3;
     helm2.scaleY = helm2.scaleX;
 
-    //
+    //helm 3
     helm3 = this.physics.add.sprite(
       center.x + center.x / 1.1,
       center.y / 9,
@@ -278,24 +270,24 @@ export default class FishgameScene extends Phaser.Scene {
     helm3.scaleY = helm3.scaleX;
 
 
-  // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
-  plastics = [
-    helm1,
-    helm2,
-    helm3,
-    spoon1,
-    spoon2,
-    spoon3,
-    straw1,
-    straw2,
-    straw3,
-    bottle1,
-    bottle2,
-    bottle3,
-    bag1,
-    bag2,
-    bag3
-  ];
+    // Creating an array of all plastics that we can use to erase them ontouch. add all plastic here.
+    plastics = [
+      helm1,
+      helm2,
+      helm3,
+      spoon1,
+      spoon2,
+      spoon3,
+      straw1,
+      straw2,
+      straw3,
+      bottle1,
+      bottle2,
+      bottle3,
+      bag1,
+      bag2,
+      bag3
+    ];
 
     //jellow coral
     jellowcoral1 = this.physics.add.image(
@@ -337,8 +329,8 @@ export default class FishgameScene extends Phaser.Scene {
     redplant.scaleY = redplant.scaleX; 
     redplant.setBodySize(1, 1, true);
 
-     //blueplant
-     blueplant = this.physics.add.image(
+    //blueplant
+    blueplant = this.physics.add.image(
       center.x + center.x/2.4,
       center.y + center.y/1.2,
       "blueplant"
@@ -347,24 +339,45 @@ export default class FishgameScene extends Phaser.Scene {
     blueplant.scaleY = blueplant.scaleX; 
     blueplant.setBodySize(1, 1, true);
 
-    turtle = this.physics.add.sprite(center.x + 200, center.y + -150, "turtle");
+    //Turtle
+    turtle = this.physics.add.sprite(center.x, center.y - center.y/2, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
     turtle.setBodySize(40, 40, true);
 
-    const friends = [turtle, jellyfish];
+    // Red Jellyfish
+    jellyfish = this.physics.add.sprite(
+      center.x + center.x / 2,
+      center.y - center.y / 1.8,
+      "jellyfish"
+    );
+    jellyfish.setDisplaySize(center.x / 4, center.y / 4);
+    jellyfish.setBodySize(20, 20, true); // does not change the displaySize only the size to interact with
+    jellyfish.setImmovable(true);
+
+    // Blue Jellyfish
+    bluejellyfish = this.physics.add.sprite(
+      center.x - center.x / 1.15,
+      center.y - center.y / 1.9,
+      "bluejellyfish"
+    );
+    bluejellyfish.setBodySize(30, 30, true); // does not change the displaySize only the size to interact with
+    bluejellyfish.setImmovable(true);
+
+    const friends = [turtle, jellyfish, bluejellyfish];
 
     fish = this.physics.add.sprite(center.x, center.y, "fish");
     fish.setScale(0.8);
     fish.setBodySize(100, 100, true);
     // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
-    console.log(fishCursors)
 
     eatingSound = this.sound.add("sound", { loop: false });
     ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
     sharkSound = this.sound.add("soundShark", { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
+    cheeringSound = this.sound.add("soundCheering", { loop: false });
+    disapprovingSound = this.sound.add("soundDisapproving", { loop: false });
 
     // Timer with a function onEvent
     this.timedEvent = this.time.delayedCall(30000, this.onEvent, [], this);
@@ -373,19 +386,43 @@ export default class FishgameScene extends Phaser.Scene {
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
-    //text to appear when eating wrong things. Make cooler!!
+    //text to appear when bumping into Turtle
     dontEatMeText = this.add.text(
-      center.x,
-      center.y - center.y/2,
+      center.x , 
+      center.y - center.y/1.5,
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 90,
+        fontSize: 50,
       }
     ).setOrigin(0.5, 0);
     dontEatMeText.visible = false;
 
-    //text to appear when shark appears. Make cooler!!
+    //text to appear when bumping into red jellyfish
+    dontDisturbMeText = this.add.text(
+      center.x + center.x / 3,
+      center.y - center.y / 1.2,
+      "Dont disturb me! I have deep thoughts.",
+      {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: 50,
+      }
+    ).setOrigin(0.5, 0);
+    dontDisturbMeText.visible = false;
+
+    //text to appear when bumping into blue  jellyfish
+    keepGoingText = this.add.text(
+      center.x - center.x / 2,
+      40,
+      "Keep going! You can do this!",
+      {
+        fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+        fontSize: 50,
+      }
+    ).setOrigin(0.5, 0);
+    keepGoingText.visible = false;
+
+    //text to appear when shark appears.
     hideText = this.add.text(
       center.x,
       center.y - center.y/2,
@@ -412,14 +449,14 @@ export default class FishgameScene extends Phaser.Scene {
             setTimeout(() => {
               sharkSound.play();
             }, 200); 
-            fish.setPosition(center.x, center.y*2);
+            fish.setPosition(center.x*2, center.y*2);
           }
           else if(plastic == bottle1){
             sharkright.setVelocity(400, 0);
             setTimeout(() => {
               sharkSound.play();
             }, 200); 
-            fish.setPosition(center.x, center.y*2);
+            fish.setPosition(center.x*2, center.y*2);
           }
           hideText.visible = true;
           setTimeout(() => {
@@ -445,12 +482,21 @@ export default class FishgameScene extends Phaser.Scene {
       }, 2000); //take away msg after 2 sec
     });
 
-    // if the fish collides with the jellyfish
+    // if the fish collides with the red jellyfish
     this.physics.add.collider(fish, jellyfish, function () {
-      ouchSound.play();
-      dontEatMeText.visible = true;
+      disapprovingSound.play();
+      dontDisturbMeText.visible = true;
       setTimeout(() => {
-        dontEatMeText.visible = false;
+        dontDisturbMeText.visible = false;
+      }, 2000); //take away msg after 2 sec
+    });
+
+    // if the fish collides with the blue jellyfish
+    this.physics.add.collider(fish, bluejellyfish, function () {
+      cheeringSound.play();
+      keepGoingText.visible = true;
+      setTimeout(() => {
+        keepGoingText.visible = false;
       }, 2000); //take away msg after 2 sec
     });
 
