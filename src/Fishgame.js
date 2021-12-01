@@ -23,6 +23,8 @@ import redplantSrc from "../assets/redplant.png";
 import sharkleftSrc from "../assets/shark.png";
 import sharkrightSrc from "../assets/sharkright.png";
 
+import bubbleSrc from "../assets/bubble.png";
+
 
 let bag1,
   bag2,
@@ -64,6 +66,8 @@ let bag1,
   blueplant,
   redplant,
   sharkleft,
+  bubble,
+  emitter,
   sharkright;
 
 
@@ -102,6 +106,7 @@ export default class FishgameScene extends Phaser.Scene {
     this.load.image("blueplant", blueplantSrc);
     this.load.image("sharkleft", sharkleftSrc);
     this.load.image("sharkright", sharkrightSrc);
+    this.load.image("bubble", bubbleSrc);
   }
 
   create() {
@@ -368,9 +373,27 @@ export default class FishgameScene extends Phaser.Scene {
 
     fish = this.physics.add.sprite(center.x, center.y, "fish");
     fish.setScale(0.8);
+    fish.setOrigin(0.2, 0.4)
     fish.setBodySize(100, 100, true);
     // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
+
+    //so the fish cant escape the screen
+    fish.setCollideWorldBounds(true);
+
+    bubble = this.add.particles("bubble");
+      
+    emitter = bubble.createEmitter({
+      scale: { start: 0.1, end: 1},
+      speed: 50,
+      gravity: { x:0, y: 200},
+      lifespan: 200, // {min: 1000, max: 2000},
+      blendMode: "ADD",
+      frequency: 110, 
+      //maxParticles: 10, 
+
+    });
+    emitter.startFollow(fish);
 
     eatingSound = this.sound.add("sound", { loop: false });
     ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
@@ -378,13 +401,6 @@ export default class FishgameScene extends Phaser.Scene {
     munchingSound = this.sound.add("soundMunching", { loop: false });
     cheeringSound = this.sound.add("soundCheering", { loop: false });
     disapprovingSound = this.sound.add("soundDisapproving", { loop: false });
-
-    // Timer with a function onEvent
-    this.timedEvent = this.time.delayedCall(30000, this.onEvent, [], this);
-    timerText = this.add.text(center.x, 10); // the text for the timer
-
-    //so the fish cant escape the screen
-    fish.setCollideWorldBounds(true);
 
     //text to appear when bumping into Turtle
     dontEatMeText = this.add.text(
@@ -502,6 +518,10 @@ export default class FishgameScene extends Phaser.Scene {
 
     // Creating display for score
     scoreDisplay = this.add.text(center.x, 50);
+
+    // Timer with a function onEvent
+    this.timedEvent = this.time.delayedCall(30000, this.onEvent, [], this);
+    timerText = this.add.text(center.x, 10); // the text for the timer
   }
   
 
@@ -526,22 +546,26 @@ export default class FishgameScene extends Phaser.Scene {
     if (fishCursors.up.isDown) {
       fish.y -= 2;
       fish.setVelocity(0, -600);
-      fish.setFlipX(10);
+      fish.setFlipX(0);
+      fish.setOrigin(0.2, 0.4)
     }
     if (fishCursors.down.isDown) {
       fish.y += 2;
       fish.setVelocity(0, 600);
       fish.setFlipY(0);
+      fish.setOrigin(0.2, 0.4)
     }
     if (fishCursors.right.isDown) {
       fish.x += 2;
       fish.setVelocity(600, 0);
       fish.setFlipX(0);
+      fish.setOrigin(0.2, 0.4)
     }
     if (fishCursors.left.isDown) {
       fish.x -= 2;
       fish.setVelocity(-600, 0);
       fish.setFlipX(10);
+      fish.setOrigin(0.8, 0.4)
     }
     if (
       !fishCursors.left.isDown &&
