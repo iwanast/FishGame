@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import jellyfishSrc from "../assets/jellyfish.png";
+import bluejellyfishSrc from "../assets/bluejellyfish.png";
 import bagSrc from "../assets/bag.png";
 import bottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
@@ -26,6 +27,7 @@ import sharkrightSrc from "../assets/sharkright.png";
 let bag1,
   bag2,
   bag3,
+  bluejellyfish,
   jellyfish,
   ocean,
   center,
@@ -79,6 +81,7 @@ export default class FishgameScene extends Phaser.Scene {
   preload() {
     this.load.image("bag", bagSrc);
     this.load.image("jellyfish", jellyfishSrc);
+    this.load.image("bluejellyfish", bluejellyfishSrc);
     this.load.image("ocean", oceanSrc);
     this.load.image("bottle", bottleSrc);
     this.load.image("fish", fishSrc);
@@ -342,17 +345,26 @@ export default class FishgameScene extends Phaser.Scene {
     turtle.setImmovable(true);
     turtle.setBodySize(40, 40, true);
 
-     // Jellyfish
-     jellyfish = this.physics.add.sprite(
+    // Red Jellyfish
+    jellyfish = this.physics.add.sprite(
       center.x + center.x / 2,
-      center.y - center.y / 1.5,
+      center.y - center.y / 1.8,
       "jellyfish"
     );
     jellyfish.setDisplaySize(center.x / 4, center.y / 4);
     jellyfish.setBodySize(20, 20, true); // does not change the displaySize only the size to interact with
     jellyfish.setImmovable(true);
 
-    const friends = [turtle, jellyfish];
+    // Blue Jellyfish
+    bluejellyfish = this.physics.add.sprite(
+      center.x - center.x / 1.15,
+      center.y - center.y / 1.9,
+      "bluejellyfish"
+    );
+    bluejellyfish.setBodySize(30, 30, true); // does not change the displaySize only the size to interact with
+    bluejellyfish.setImmovable(true);
+
+    const friends = [turtle, jellyfish, bluejellyfish];
 
     fish = this.physics.add.sprite(center.x, center.y, "fish");
     fish.setScale(0.8);
@@ -381,31 +393,31 @@ export default class FishgameScene extends Phaser.Scene {
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 90,
+        fontSize: 50,
       }
     ).setOrigin(0.5, 0);
     dontEatMeText.visible = false;
 
     //text to appear when bumping into red jellyfish
     dontDisturbMeText = this.add.text(
-      center.x + center.x / 2,
-      center.y - center.y / 1.1,
+      center.x + center.x / 3,
+      center.y - center.y / 1.2,
       "Dont disturb me! I have deep thoughts.",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 90,
+        fontSize: 50,
       }
     ).setOrigin(0.5, 0);
     dontDisturbMeText.visible = false;
 
-    //text to appear when bumping into transparent jellyfish
+    //text to appear when bumping into blue  jellyfish
     keepGoingText = this.add.text(
-      center.x + center.x / 2,
-      center.y - center.y / 1.1,
+      center.x - center.x / 2,
+      40,
       "Keep going! You can do this!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
-        fontSize: 90,
+        fontSize: 50,
       }
     ).setOrigin(0.5, 0);
     keepGoingText.visible = false;
@@ -470,12 +482,21 @@ export default class FishgameScene extends Phaser.Scene {
       }, 2000); //take away msg after 2 sec
     });
 
-    // if the fish collides with the jellyfish
+    // if the fish collides with the red jellyfish
     this.physics.add.collider(fish, jellyfish, function () {
       disapprovingSound.play();
       dontDisturbMeText.visible = true;
       setTimeout(() => {
         dontDisturbMeText.visible = false;
+      }, 2000); //take away msg after 2 sec
+    });
+
+    // if the fish collides with the blue jellyfish
+    this.physics.add.collider(fish, bluejellyfish, function () {
+      cheeringSound.play();
+      keepGoingText.visible = true;
+      setTimeout(() => {
+        keepGoingText.visible = false;
       }, 2000); //take away msg after 2 sec
     });
 
