@@ -427,7 +427,12 @@ export default class FishgameScene extends Phaser.Scene {
           }, 2000); //take away msg after 2 sec
         }
         plastic.destroy();
-        userScore = userScore + 10;
+        if(userScore < 140){
+          userScore = userScore + 10;
+        }else if(userScore == 140){
+          userScore = userScore + 160;
+        }
+        
       });
     });
     

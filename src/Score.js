@@ -38,6 +38,7 @@ const scoreTextArray = [
   `
   You are a real friend and have helped clean the ocean!
   Your friends will survive and will give you a special funeral. 
+  
   Only a not polluted ocean could be better!`,];
 
        
@@ -139,10 +140,12 @@ export default class ScoreScene extends Phaser.Scene {
 
   bestScoreText = this.add.text(center.x, center.y, `
   Best scores
+
   1. ${arrayScores[0].username} with ${arrayScores[0].score}
   2. ${arrayScores[1].username} with ${arrayScores[1].score}
   3. ${arrayScores[2].username} with ${arrayScores[2].score}`, {
     font: '24px monospace',
+    align: "center",
     fill: '#ffff00'    // text-color 
   }).setOrigin(0.5, 0);;
 
