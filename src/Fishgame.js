@@ -4,7 +4,7 @@ import bluejellyfishSrc from "../assets/bluejellyfish.png";
 import bagSrc from "../assets/bag.png";
 import bottleSrc from "../assets/plasticbottle.png";
 import oceanSrc from "../assets/ocean.png";
-import fishSrc from "../assets/fish.png";
+import fishSrc from "../assets/fish1.png";
 import turtleSrc from "../assets/turtle.png";
 import soundSrc from "../assets/soundfx.wav";
 import soundOuchSrc from "../assets/ouch.wav";
@@ -399,8 +399,8 @@ export default class FishgameScene extends Phaser.Scene {
     ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
     sharkSound = this.sound.add("soundShark", { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
-    cheeringSound = this.sound.add("soundCheering", { loop: false });
-    disapprovingSound = this.sound.add("soundDisapproving", { loop: false });
+    cheeringSound = this.sound.add("soundCheering", {volume: 0.2}, { loop: false });
+    disapprovingSound = this.sound.add("soundDisapproving", {volume: 0.2}, { loop: false });
 
     //text to appear when bumping into Turtle
     dontEatMeText = this.add.text(
