@@ -26,7 +26,7 @@ export default class IntroScene extends Phaser.Scene {
     };
     introText = this.add.text(
       center.x,
-      center.y,
+      center.y - 100, //updated for better balance between elements
       ` 
       You have to eat as much plastic as possible 
       to save your friends. 
@@ -83,9 +83,10 @@ export default class IntroScene extends Phaser.Scene {
     // Adds the welcome text on screen
     this.message = this.add
       .text(center.x, 250, "Hello, --", {
-        color: "#FFFFFF",
-        fontSize: 60,
-        fontStyle: "bold",
+        font: "50px monospace",
+        align: "center",
+        weight: "bold",
+        fill: "#ffff00", // text-color
       })
       .setOrigin(0.5);
 
