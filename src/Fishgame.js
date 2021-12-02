@@ -76,6 +76,9 @@ let bag1,
 
 // For the scores
 let userScore = 0;
+let soundOuchIsPlaying = false;
+let soundCheeringIsPlaying = false;
+let soundDisapprovingIsPlaying = false; 
 
 export default class FishgameScene extends Phaser.Scene {
   constructor() {
@@ -373,7 +376,7 @@ export default class FishgameScene extends Phaser.Scene {
 
     fish = this.physics.add.sprite(center.x, center.y, "fish");
     fish.setScale(0.8);
-    fish.setOrigin(0.2, 0.4)
+    fish.setOrigin(0.2, 0.2)
     fish.setBodySize(100, 100, true);
     // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
@@ -491,7 +494,13 @@ export default class FishgameScene extends Phaser.Scene {
     
     // if the fish collides with the turtle
     this.physics.add.collider(fish, turtle, function () {
-      ouchSound.play();
+      if(!soundOuchIsPlaying){
+        soundOuchIsPlaying = true; 
+        ouchSound.play();
+      }
+      setTimeout(() => {
+        soundOuchIsPlaying = false;
+      }, ouchSound.duration*1000 + 4000);
       dontEatMeText.visible = true;
       setTimeout(() => {
         dontEatMeText.visible = false;
@@ -500,7 +509,13 @@ export default class FishgameScene extends Phaser.Scene {
 
     // if the fish collides with the red jellyfish
     this.physics.add.collider(fish, jellyfish, function () {
-      disapprovingSound.play();
+      if(!soundDisapprovingIsPlaying){
+        soundDisapprovingIsPlaying = true; 
+        disapprovingSound.play();
+      }
+      setTimeout(() => {
+        soundDisapprovingIsPlaying = false;
+      }, disapprovingSound.duration*1000 + 4000);
       dontDisturbMeText.visible = true;
       setTimeout(() => {
         dontDisturbMeText.visible = false;
@@ -509,7 +524,13 @@ export default class FishgameScene extends Phaser.Scene {
 
     // if the fish collides with the blue jellyfish
     this.physics.add.collider(fish, bluejellyfish, function () {
-      cheeringSound.play();
+      if(!soundCheeringIsPlaying){
+        soundCheeringIsPlaying = true; 
+        cheeringSound.play();
+      }
+      setTimeout(() => {
+        soundCheeringIsPlaying = false;
+      }, cheeringSound.duration*1000 + 4000);
       keepGoingText.visible = true;
       setTimeout(() => {
         keepGoingText.visible = false;
@@ -547,25 +568,25 @@ export default class FishgameScene extends Phaser.Scene {
       fish.y -= 2;
       fish.setVelocity(0, -600);
       fish.setFlipX(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.down.isDown) {
       fish.y += 2;
       fish.setVelocity(0, 600);
       fish.setFlipY(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.right.isDown) {
       fish.x += 2;
       fish.setVelocity(600, 0);
       fish.setFlipX(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.left.isDown) {
       fish.x -= 2;
       fish.setVelocity(-600, 0);
       fish.setFlipX(10);
-      fish.setOrigin(0.8, 0.4)
+      fish.setOrigin(0.8, 0.2)
     }
     if (
       !fishCursors.left.isDown &&
@@ -586,6 +607,6 @@ export default class FishgameScene extends Phaser.Scene {
   onEvent() {
     //Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-    this.scene.start("Score");
+    //this.scene.start("Score");
   }
 }
