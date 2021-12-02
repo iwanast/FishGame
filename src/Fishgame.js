@@ -351,14 +351,14 @@ export default class FishgameScene extends Phaser.Scene {
 
     ///////////////////////////// FISH AND FRIENDS //////////////////////////////
     //Turtle
-    turtle = this.physics.add.sprite(center.x, center.y - center.y/2, "turtle");
+    turtle = this.physics.add.sprite(center.x + center.x/7, center.y + center.y/3, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
     turtle.setBodySize(40, 40, true);
 
     // Red Jellyfish
     jellyfish = this.physics.add.sprite(
-      center.x + center.x / 2,
+      center.x + center.x / 2.5,
       center.y - center.y / 1.8,
       "jellyfish"
     );
@@ -377,7 +377,7 @@ export default class FishgameScene extends Phaser.Scene {
 
     const friends = [turtle, jellyfish, bluejellyfish];
 
-    fish = this.physics.add.sprite(center.x, center.y, "fish");
+    fish = this.physics.add.sprite(center.x, center.y - center.y/2, "fish");
     fish.setScale(0.8);
     fish.setOrigin(0.2, 0.2)
     fish.setBodySize(100, 100, true);
@@ -404,15 +404,15 @@ export default class FishgameScene extends Phaser.Scene {
     // Soundeffects
     eatingSound = this.sound.add("sound", { loop: false });
     ouchSound = this.sound.add("soundOuch", { loop: false });
-    sharkSound = this.sound.add("soundShark", { loop: false });
+    sharkSound = this.sound.add("soundShark", {volume: 0.2}, { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
     cheeringSound = this.sound.add("soundCheering", {volume: 0.2}, { loop: false });
     disapprovingSound = this.sound.add("soundDisapproving", {volume: 0.2}, { loop: false });
 
     //text to appear when bumping into Turtle
     dontEatMeText = this.add.text(
-      center.x , 
-      center.y - center.y/1.5,
+      center.x + center.x/7 , 
+      center.y,
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
