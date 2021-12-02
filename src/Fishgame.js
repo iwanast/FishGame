@@ -76,6 +76,9 @@ let bag1,
 
 // For the scores
 let userScore = 0;
+let soundOuchIsPlaying = false;
+let soundCheeringIsPlaying = false;
+let soundDisapprovingIsPlaying = false; 
 
 export default class FishgameScene extends Phaser.Scene {
   constructor() {
@@ -120,6 +123,7 @@ export default class FishgameScene extends Phaser.Scene {
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setDisplaySize(center.x * 2, center.y * 2);
 
+    ///////////////////////////// PLASTICS AND SHARKS //////////////////////////////
     //straw1
     straw1 = this.physics.add.sprite(
       center.x - center.x / 3,
@@ -294,6 +298,7 @@ export default class FishgameScene extends Phaser.Scene {
       bag3
     ];
 
+    ///////////////////////////// HIDINGS /////////////////////////////////////////
     //jellow coral
     jellowcoral1 = this.physics.add.image(
       center.x - center.x / 3,
@@ -344,15 +349,16 @@ export default class FishgameScene extends Phaser.Scene {
     blueplant.scaleY = blueplant.scaleX; 
     blueplant.setBodySize(1, 1, true);
 
+    ///////////////////////////// FISH AND FRIENDS //////////////////////////////
     //Turtle
-    turtle = this.physics.add.sprite(center.x, center.y - center.y/2, "turtle");
+    turtle = this.physics.add.sprite(center.x + center.x/7, center.y + center.y/3, "turtle");
     turtle.setScale(0.2);
     turtle.setImmovable(true);
     turtle.setBodySize(40, 40, true);
 
     // Red Jellyfish
     jellyfish = this.physics.add.sprite(
-      center.x + center.x / 2,
+      center.x + center.x / 2.5,
       center.y - center.y / 1.8,
       "jellyfish"
     );
@@ -371,9 +377,9 @@ export default class FishgameScene extends Phaser.Scene {
 
     const friends = [turtle, jellyfish, bluejellyfish];
 
-    fish = this.physics.add.sprite(center.x, center.y, "fish");
+    fish = this.physics.add.sprite(center.x, center.y - center.y/2, "fish");
     fish.setScale(0.8);
-    fish.setOrigin(0.2, 0.4)
+    fish.setOrigin(0.2, 0.2)
     fish.setBodySize(100, 100, true);
     // setting cursors for fish
     fishCursors = this.input.keyboard.createCursorKeys();
@@ -381,31 +387,32 @@ export default class FishgameScene extends Phaser.Scene {
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
+    // Particles for the fishtail
     bubble = this.add.particles("bubble");
-      
     emitter = bubble.createEmitter({
-      scale: { start: 0.1, end: 1},
-      speed: 50,
-      gravity: { x:0, y: 200},
-      lifespan: 200, // {min: 1000, max: 2000},
+      scale: { start: 0.2, end: 1},
+      speed: 100,
+      gravity: { x:0, y: -1200},
+      lifespan: {min: 200, max: 250},
       blendMode: "ADD",
       frequency: 110, 
-      //maxParticles: 10, 
-
     });
     emitter.startFollow(fish);
 
+    ///////////////////////////// SOUND TEXT AND FUNCTIONALITY //////////////////////////////
+    
+    // Soundeffects
     eatingSound = this.sound.add("sound", { loop: false });
-    ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
-    sharkSound = this.sound.add("soundShark", { loop: false });
+    ouchSound = this.sound.add("soundOuch", { loop: false });
+    sharkSound = this.sound.add("soundShark", {volume: 0.2}, { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
     cheeringSound = this.sound.add("soundCheering", {volume: 0.2}, { loop: false });
     disapprovingSound = this.sound.add("soundDisapproving", {volume: 0.2}, { loop: false });
 
     //text to appear when bumping into Turtle
     dontEatMeText = this.add.text(
-      center.x , 
-      center.y - center.y/1.5,
+      center.x + center.x/7 , 
+      center.y,
       "Dont eat me!",
       {
         fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
@@ -450,7 +457,7 @@ export default class FishgameScene extends Phaser.Scene {
     ).setOrigin(0.5, 0);;
     hideText.visible = false;
 
-    // // eliminates plastics on contact + play eating sound + takes it away from the array
+    // eliminates plastics on contact + play eating sound + takes it away from the array
     plastics.forEach(plastic => {
       this.physics.add.collider(fish, plastic, function () {
         munchingSound.play();
@@ -491,7 +498,13 @@ export default class FishgameScene extends Phaser.Scene {
     
     // if the fish collides with the turtle
     this.physics.add.collider(fish, turtle, function () {
-      ouchSound.play();
+      if(!soundOuchIsPlaying){
+        soundOuchIsPlaying = true; 
+        ouchSound.play();
+      }
+      setTimeout(() => {
+        soundOuchIsPlaying = false;
+      }, ouchSound.duration*1000 + 4000);
       dontEatMeText.visible = true;
       setTimeout(() => {
         dontEatMeText.visible = false;
@@ -500,7 +513,13 @@ export default class FishgameScene extends Phaser.Scene {
 
     // if the fish collides with the red jellyfish
     this.physics.add.collider(fish, jellyfish, function () {
-      disapprovingSound.play();
+      if(!soundDisapprovingIsPlaying){
+        soundDisapprovingIsPlaying = true; 
+        disapprovingSound.play();
+      }
+      setTimeout(() => {
+        soundDisapprovingIsPlaying = false;
+      }, disapprovingSound.duration*1000 + 4000);
       dontDisturbMeText.visible = true;
       setTimeout(() => {
         dontDisturbMeText.visible = false;
@@ -509,7 +528,13 @@ export default class FishgameScene extends Phaser.Scene {
 
     // if the fish collides with the blue jellyfish
     this.physics.add.collider(fish, bluejellyfish, function () {
-      cheeringSound.play();
+      if(!soundCheeringIsPlaying){
+        soundCheeringIsPlaying = true; 
+        cheeringSound.play();
+      }
+      setTimeout(() => {
+        soundCheeringIsPlaying = false;
+      }, cheeringSound.duration*1000 + 4000);
       keepGoingText.visible = true;
       setTimeout(() => {
         keepGoingText.visible = false;
@@ -547,25 +572,25 @@ export default class FishgameScene extends Phaser.Scene {
       fish.y -= 2;
       fish.setVelocity(0, -600);
       fish.setFlipX(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.down.isDown) {
       fish.y += 2;
       fish.setVelocity(0, 600);
       fish.setFlipY(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.right.isDown) {
       fish.x += 2;
       fish.setVelocity(600, 0);
       fish.setFlipX(0);
-      fish.setOrigin(0.2, 0.4)
+      fish.setOrigin(0.2, 0.2)
     }
     if (fishCursors.left.isDown) {
       fish.x -= 2;
       fish.setVelocity(-600, 0);
       fish.setFlipX(10);
-      fish.setOrigin(0.8, 0.4)
+      fish.setOrigin(0.8, 0.2)
     }
     if (
       !fishCursors.left.isDown &&
