@@ -123,6 +123,7 @@ export default class FishgameScene extends Phaser.Scene {
     ocean = this.physics.add.image(center.x, center.y, "ocean");
     ocean.setDisplaySize(center.x * 2, center.y * 2);
 
+    ///////////////////////////// PLASTICS AND SHARKS //////////////////////////////
     //straw1
     straw1 = this.physics.add.sprite(
       center.x - center.x / 3,
@@ -297,6 +298,7 @@ export default class FishgameScene extends Phaser.Scene {
       bag3
     ];
 
+    ///////////////////////////// HIDINGS /////////////////////////////////////////
     //jellow coral
     jellowcoral1 = this.physics.add.image(
       center.x - center.x / 3,
@@ -347,6 +349,7 @@ export default class FishgameScene extends Phaser.Scene {
     blueplant.scaleY = blueplant.scaleX; 
     blueplant.setBodySize(1, 1, true);
 
+    ///////////////////////////// FISH AND FRIENDS //////////////////////////////
     //Turtle
     turtle = this.physics.add.sprite(center.x, center.y - center.y/2, "turtle");
     turtle.setScale(0.2);
@@ -396,6 +399,8 @@ export default class FishgameScene extends Phaser.Scene {
     });
     emitter.startFollow(fish);
 
+    ///////////////////////////// SOUND TEXT AND FUNCTIONALITY //////////////////////////////
+    
     // Soundeffects
     eatingSound = this.sound.add("sound", { loop: false });
     ouchSound = this.sound.add("soundOuch", { loop: false });
@@ -452,7 +457,7 @@ export default class FishgameScene extends Phaser.Scene {
     ).setOrigin(0.5, 0);;
     hideText.visible = false;
 
-    // // eliminates plastics on contact + play eating sound + takes it away from the array
+    // eliminates plastics on contact + play eating sound + takes it away from the array
     plastics.forEach(plastic => {
       this.physics.add.collider(fish, plastic, function () {
         munchingSound.play();

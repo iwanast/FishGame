@@ -19,17 +19,17 @@ const scoreTextArray = [
   You are still in deep water, keep the humor up and help your friends to survive.
   Some have already died. 
 
-  You want a hint? There are five different sort of plastic.`, 
+  You want a hint? There are five different sort of plastic.`,
+  `
+  You have reached the middle and saved halv of your friends. 
+  You may survive at this point but probably not.
+  
+  You want a hint? Rosa and yellow swimming in the water are not always fishes.`, 
   `
   Its always better to look under the surface real focused and you are focused! 
   But not enough yet. 
 
   You want a hint? Each plasticsort exists so many times as the number which should give luck.`,
-  `
-  You have reached the middle and saved halv of your friends. 
-  You may survive at this point but probably not.
-  
-  You want a hint? Rosa and yellow swimming in the water are not always fishes.`,
   `
   Wow what a deep concentration you have! 
   Still there are plastic missing.
