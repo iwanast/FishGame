@@ -62,10 +62,10 @@ export default class ScoreScene extends Phaser.Scene {
     };
 
    // Image for the introButton 
-   this.introButton = this.add.sprite(center.x, center.y + 200, "introButton").setInteractive();
+   this.introButton = this.add.sprite(center.x, center.y + 230, "introButton").setInteractive();
    this.introButton.setScale(0.2);
    // Text for the introButton
-   this.gameText = this.add.text(0, 0, 'Main', { fontSize: '32px', fill: '#3572db' });
+   this.gameText = this.add.text(0, 0, 'Main', { fontSize: '60px', fill: '#3572db' });
    // This centers the text in the image
    this.centerButtonText(this.gameText, this.introButton);
    
@@ -121,7 +121,7 @@ export default class ScoreScene extends Phaser.Scene {
     }
    
 
-    scoreText = this.add.text(center.x, center.y -center.y/1.5, `
+    scoreText = this.add.text(center.x, center.y -center.y/1.25, `
     ${username}, your score is: ${userscore}
     ${textForTheReachedScore}
   `, {
@@ -135,7 +135,7 @@ export default class ScoreScene extends Phaser.Scene {
   scoreText.setOrigin(0.5, 0); // this sets the text 50% to the left of its own length (so its really centered)
 
 
-  bestScoreText = this.add.text(center.x, center.y, `
+  bestScoreText = this.add.text(center.x, center.y , `
   Best scores
 
   1. ${arrayScores[0].username} with score: ${arrayScores[0].score}

@@ -82,13 +82,14 @@ export default class IntroScene extends Phaser.Scene {
 
     // Adds the welcome text on screen
     this.message = this.add
-      .text(center.x, 250, "Hello, --", {
+      .text(center.x, 100, "Hello, --", {
         font: "50px monospace",
         align: "center",
         weight: "bold",
         fill: "#3572db", // text-color
       })
       .setOrigin(0.5);
+      this.message.visible = false;
 
     // Gets the input from DOM, saves it to SS and shows it on screen
     this.returnKey = this.input.keyboard.addKey(
@@ -107,6 +108,7 @@ export default class IntroScene extends Phaser.Scene {
       this.playButton.visible = true; //setting the play button to visible
       this.gameText.visible = true;
       introText.visible = true;
+      this.message.visible = true;
     });
   }
 
