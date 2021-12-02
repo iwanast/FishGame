@@ -40,9 +40,7 @@ const scoreTextArray = [
   Your friends will survive and will give you a special funeral. 
 
   Only a not polluted ocean could be better!`,];
-
-       
-console.log("ScoreTextArray: " + scoreTextArray[0])        
+     
 export default class ScoreScene extends Phaser.Scene {
 
   constructor() {
@@ -52,7 +50,6 @@ export default class ScoreScene extends Phaser.Scene {
   preload(){
     this.load.image("jellyfishButton", jellyfishSrc);
     this.load.image("introButton", plasticbottleSrc);
-    console.log("preload Score")
     getScoreAndUsername((arrayScores) =>{
       this.setScoreText(arrayScores);
     });
