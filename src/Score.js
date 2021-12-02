@@ -36,7 +36,7 @@ const scoreTextArray = [
   
   Hint: Think about the little straws how much damage they do! `,
   `
-  You are a real friend and have helped clean the ocean!
+  WOW dubbelscore! You are a real friend and have helped clean the ocean!
   Your friends will survive and will give you a special funeral. 
 
   Only a not polluted ocean could be better!`,];
