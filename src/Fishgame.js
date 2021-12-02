@@ -384,22 +384,21 @@ export default class FishgameScene extends Phaser.Scene {
     //so the fish cant escape the screen
     fish.setCollideWorldBounds(true);
 
+    // Particles for the fishtail
     bubble = this.add.particles("bubble");
-      
     emitter = bubble.createEmitter({
-      scale: { start: 0.1, end: 1},
-      speed: 50,
-      gravity: { x:0, y: 200},
-      lifespan: 200, // {min: 1000, max: 2000},
+      scale: { start: 0.2, end: 1},
+      speed: 100,
+      gravity: { x:0, y: -1200},
+      lifespan: {min: 200, max: 250},
       blendMode: "ADD",
       frequency: 110, 
-      //maxParticles: 10, 
-
     });
     emitter.startFollow(fish);
 
+    // Soundeffects
     eatingSound = this.sound.add("sound", { loop: false });
-    ouchSound = this.sound.add("soundOuch", { loop: false }); //Unfortunately sound is lagging, because of decoding i think
+    ouchSound = this.sound.add("soundOuch", { loop: false });
     sharkSound = this.sound.add("soundShark", { loop: false });
     munchingSound = this.sound.add("soundMunching", { loop: false });
     cheeringSound = this.sound.add("soundCheering", {volume: 0.2}, { loop: false });
@@ -607,6 +606,6 @@ export default class FishgameScene extends Phaser.Scene {
   onEvent() {
     //Saving the userScore to sessionStorage
     sessionStorage.setItem("score", userScore);
-    //this.scene.start("Score");
+    this.scene.start("Score");
   }
 }
