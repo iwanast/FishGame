@@ -26,7 +26,7 @@ export default class IntroScene extends Phaser.Scene {
     };
     introText = this.add.text(
       center.x,
-      center.y - 100, //updated for better balance between elements
+      center.y, //updated for better balance between elements
       ` 
       You have to eat as much plastic as possible 
       to save your friends. 
