@@ -68,7 +68,7 @@ export default class ScoreScene extends Phaser.Scene {
    this.introButton = this.add.sprite(center.x, center.y + 200, "introButton").setInteractive();
    this.introButton.setScale(0.2);
    // Text for the introButton
-   this.gameText = this.add.text(0, 0, 'Main', { fontSize: '32px', fill: '#ffff00' });
+   this.gameText = this.add.text(0, 0, 'Main', { fontSize: '32px', fill: '#3572db' });
    // This centers the text in the image
    this.centerButtonText(this.gameText, this.introButton);
    
@@ -132,7 +132,7 @@ export default class ScoreScene extends Phaser.Scene {
     align: "center", 
 
     
-    fill: '#ffff00'    // text-color
+    fill: '#3572db'    // text-color
   });
   
   scoreText.setOrigin(0.5, 0); // this sets the text 50% to the left of its own length (so its really centered)
@@ -146,7 +146,7 @@ export default class ScoreScene extends Phaser.Scene {
   3. ${arrayScores[2].username} with score: ${arrayScores[2].score}`, {
     font: '24px monospace',
     align: "center",
-    fill: '#ffff00'    // text-color 
+    fill: '#3572db'    // text-color 
   }).setOrigin(0.5, 0);;
 
   }  

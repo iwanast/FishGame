@@ -39,7 +39,7 @@ export default class IntroScene extends Phaser.Scene {
       {
         font: "24px monospace",
         align: "center", 
-        fill: "#ffff00", // text-color
+        fill: "#3572db", // text-color old: #ffff00
       }
     );
     introText.setOrigin(0.5, 0.5); // this sets the text 50% to the left and up of its own length and height (so its really centered)
@@ -48,11 +48,11 @@ export default class IntroScene extends Phaser.Scene {
     this.playButton = this.add
       .sprite(center.x, center.y + 200, "playButton")
       .setInteractive();
-    this.playButton.setScale(0.2);
+    this.playButton.setScale(0.4);
     // Text for the playButton
     this.gameText = this.add.text(0, 0, "Play", {
-      font: "32px monospace",
-      fill: "#ffff00",
+      font: "70px monospace",
+      fill: "#3572db",
     });
     // This centers the text in the image
     this.centerButtonText(this.gameText, this.playButton);
@@ -86,7 +86,7 @@ export default class IntroScene extends Phaser.Scene {
         font: "50px monospace",
         align: "center",
         weight: "bold",
-        fill: "#ffff00", // text-color
+        fill: "#3572db", // text-color
       })
       .setOrigin(0.5);
 
