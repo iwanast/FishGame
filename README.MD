@@ -3,7 +3,7 @@ Hyper Island - If this, then that Module - Brief 3.
 <h2>📂 The Brief:</h2>
 Building a game with Javascript and the framework/engine Phaser 3. 
 
-⏳ Time spent / Deadline:
+<h3>⏳ Time spent / Deadline:</h3>
 2,5 weeks.
 
 🎯 Goals:
