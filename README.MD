@@ -59,7 +59,7 @@ The player gets an encouraging text at the end with a hint to ro rise to the cha
 <li>Phaser 3</li>
 </ul>
 
-<h2>👩‍👩‍👦‍👦 Contributors:</h2>
+👩‍👩‍👦‍👦 Contributors:
 [Iwana Städeli](https://github.com/iwanast)<br>
 [Tintin Hamrin](https://github.com/TintinHamrin)<br>
 [Mohammad Moazzen](https://github.com/momoazzen)
