@@ -26,19 +26,39 @@ Building a game with JavaScript and the framework/engine Phaser 3.
  We had daily checkins to update each other on the process and worked a lot with Trello tickets to not work on the same features. 
  We regularly updated to GitHub and fetched so we could work with the latest features.
 
-<h2>The projects content</h2>
+<h2>U+E000 The projects content</h2>
 We created a game underwater where a fish eats all the hidden plastics to save his friends. 
 There are sound effects if bumping into other creatures in the sea.
 The player has to be cautious of the sharks and the time ticking away. 
+We temporarily store the score in SessionStorage to access it from different scenes. 
 The scores from the best 3 players are fetched from Firestore and shown under the current players score. 
 The player gets an encouraging text at the end with a hint to ro rise to the challenge to get a better score. 
 
 <h2>😬 Challenges:</h2>
-Understand
-
+<ul>
+ <li>Understand Phasers API Docs</li>
+ <li>Work with asynchronous JavaScript and make it work over multiple classes and files</li>
+ <li>Different GitHubs issues, like forgetting .gitignore in the beginning and staging/comitting all files after the setup</li>
+</ul>
 
 👨‍🎓 Learnings:
+<ul>
+ <li>Deeper understanding of JS.</li>
+<li>Basic knowledge of Firestore.</li>
+<li>Improved use of Github - worked smoothly on separate branches.</li>
+<li>Scratching the surface of NodeJS and its packages.</li>
+</ul>
 
+<h2>💻 Tech used in this specific repository:</h2>
+<
+Github
+HTML
+CSS
+SCSS
+JavaScript
+Firebase
+Trello
+Spotify API
 
 👩‍👩‍👦‍👦 Contributors:<br>
 [Iwana Städeli](https://github.com/iwanast)<br> 
