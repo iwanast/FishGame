@@ -41,7 +41,7 @@ The player gets an encouraging text at the end with a hint to ro rise to the cha
  <li>Different GitHubs issues, like forgetting .gitignore in the beginning and staging/comitting all files after the setup</li>
 </ul>
 
-👨‍🎓 Learnings:
+<h2>👨‍🎓 Learnings:</h2>
 <ul>
  <li>Deeper understanding of JS.</li>
 <li>Basic knowledge of Firestore.</li>
@@ -59,7 +59,7 @@ The player gets an encouraging text at the end with a hint to ro rise to the cha
 <li>Phaser 3</li>
 </ul>
 
-<h2>👩‍👩‍👦‍👦 Contributors:</2><br>
+<h2>👩‍👩‍👦‍👦 Contributors:</h2><br>
 [Iwana Städeli](https://github.com/iwanast)<br> 
 [Tintin Hamrin](https://github.com/TintinHamrin)<br>
 [Mohammad Moazzen](https://github.com/momoazzen)
