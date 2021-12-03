@@ -3,7 +3,7 @@ Hyper Island - If this, then that Module - Brief 3.
 <h2>📂 The Brief:</h2>
 Building a game with JavaScript and the framework/engine Phaser 3. 
 
-<h3>⏳ Time spent / Deadline:</h3>
+<h2>⏳ Time spent / Deadline:</h2>
 2,5 weeks.
 
 <h2>🎯 Goals:</h2>
@@ -26,7 +26,7 @@ Building a game with JavaScript and the framework/engine Phaser 3.
  We had daily checkins to update each other on the process and worked a lot with Trello tickets to not work on the same features. 
  We regularly updated to GitHub and fetched so we could work with the latest features.
 
-<h2>The projects content</h2>
+<h2>&#E000; The projects content</h2>
 We created a game underwater where a fish eats all the hidden plastics to save his friends. 
 There are sound effects if bumping into other creatures in the sea.
 The player has to be cautious of the sharks and the time ticking away. 
