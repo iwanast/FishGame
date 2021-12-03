@@ -12,7 +12,7 @@ export default {
     default: "arcade",
     arcade: {
       gravity: false,
-      debug: true,
+      debug: false,
       //gravity: { y: 5 },
     },
   },

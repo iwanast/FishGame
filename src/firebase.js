@@ -39,8 +39,7 @@ async function getScoreAndUsername(callback) {
   // Save first the new user/userscore in Firestore
   let score = JSON.parse(sessionStorage.getItem("score"));
   let username = sessionStorage.getItem("user"); 
-  //When game is functioning, we do not cancel out this anymore, but for now we do not want to save all the scores each time we restart
-  //storeScoreInFireStore(username, score); 
+  storeScoreInFireStore(username, score); 
 
   // take now from Firestore the best 3 scores
   const highScoreCol = collection(db, 'highscore')

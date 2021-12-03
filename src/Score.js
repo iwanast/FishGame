@@ -29,7 +29,8 @@ const scoreTextArray = [
   Its always better to look under the surface real focused and you are focused! 
   But not enough yet. 
 
-  You want a hint? Each plasticsort exists so many times as the number which should give luck.`,
+  You want a hint? 
+  Each plasticsort exists so many times as the number which should give luck.`,
   `
   Wow what a deep concentration you have! 
   Still there are plastic missing.
