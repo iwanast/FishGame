@@ -26,7 +26,7 @@ Building a game with JavaScript and the framework/engine Phaser 3.
  We had daily checkins to update each other on the process and worked a lot with Trello tickets to not work on the same features. 
  We regularly updated to GitHub and fetched so we could work with the latest features.
 
-<h2>&#E000; The projects content</h2>
+<h2>🐠 The projects content</h2>
 We created a game underwater where a fish eats all the hidden plastics to save his friends. 
 There are sound effects if bumping into other creatures in the sea.
 The player has to be cautious of the sharks and the time ticking away. 
@@ -59,7 +59,7 @@ The player gets an encouraging text at the end with a hint to ro rise to the cha
 <li>Phaser 3</li>
 </ul>
 
-👩‍👩‍👦‍👦 Contributors:<br>
+<h2>👩‍👩‍👦‍👦 Contributors:</2><br>
 [Iwana Städeli](https://github.com/iwanast)<br> 
 [Tintin Hamrin](https://github.com/TintinHamrin)<br>
 [Mohammad Moazzen](https://github.com/momoazzen)
