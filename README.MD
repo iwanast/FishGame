@@ -1,4 +1,4 @@
-#Hyper Island - If this, then that Module - Brief 3.
+Hyper Island - If this, then that Module - Brief 3.
 
 <h2>📂 The Brief:</h2>
 Building a game with JavaScript and the framework/engine Phaser 3. 
@@ -59,7 +59,7 @@ The player gets an encouraging text at the end with a hint to rise to the challe
 <li>Phaser 3</li>
 </ul>
 
-###👩‍👩‍👦‍👦 Contributors:
+###  :family_woman_woman_boy_boy: 👩‍👩‍👦‍👦 Contributors:
 - [Iwana Städeli](https://github.com/iwanast)<br>
 - [Tintin Hamrin](https://github.com/TintinHamrin)<br>
 - [Mohammad Moazzen](https://github.com/momoazzen)
